@@ -24,6 +24,7 @@ public class LevelManager : MonoBehaviour {
     public GameObject[] walls;
 
     private Transform levelHolder;
+    private int tileSize = 10;
 
     public void LevelSetup()
     {
@@ -33,9 +34,27 @@ public class LevelManager : MonoBehaviour {
         {
             for (int y = 0; y < rows; y++)
             {
-                GameObject toInstantiate = floorTiles[Random.Range(0, floorTiles.Length)];
-                GameObject instance = Instantiate(toInstantiate, new Vector3(x*10f, 0f, y*10f), Quaternion.identity) as GameObject;
-                instance.transform.SetParent(levelHolder);
+                GameObject toInstantiateTile = floorTiles[Random.Range(0, floorTiles.Length)];
+                GameObject instanceTile = Instantiate(toInstantiateTile, new Vector3(x* tileSize, 0f, y* tileSize), Quaternion.identity) as GameObject;
+                instanceTile.transform.SetParent(levelHolder);
+
+                if (x == 0 || x == columns - 1)
+                {
+                    for (int k = (int)(-tileSize * 0.5f); k < (int)(tileSize * 0.5f) + 1; k++)
+                    {
+                        GameObject instanceWall = Instantiate(walls[0], new Vector3((x + ((x == 0) ? -0.5f : 0.5f)) * tileSize, 0f, y * tileSize + k), Quaternion.identity) as GameObject;
+                        instanceWall.transform.SetParent(levelHolder);
+                    }
+                }
+
+                if (y == 0 || y == rows - 1)
+                {
+                    for (int k = (int)(-tileSize * 0.5f); k < (int)(tileSize * 0.5f) + 1; k++)
+                    {
+                        GameObject instanceWall = Instantiate(walls[1], new Vector3(x * tileSize + k, 0f, (y + ((y == 0) ? -0.5f : 0.5f)) * tileSize), Quaternion.identity) as GameObject;
+                        instanceWall.transform.SetParent(levelHolder);
+                    }
+                }
             }
         }
     }
