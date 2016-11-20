@@ -5,21 +5,14 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
 
-    public float speed;
-    public Text countText;
-    public Text winText;
-    public int totalPickUps;
+    public float speed = 1;
 
     private Rigidbody rb;
-    private int count;
 
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        count = 0;
-        SetCountText();
-        SetWinText();
     }
 
     void FixedUpdate()
@@ -35,28 +28,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("Pick Up"))
         {
-            other.gameObject.SetActive(false);
-            ++count;
-            SetCountText();
-            SetWinText();
+
         }
     }
-
-    void SetCountText()
-    {
-        countText.text = "Count: " + count.ToString();
-    }
-
-    void SetWinText()
-    {
-        if (count == totalPickUps)
-        {
-            winText.text = "You win!";
-        }
-        else
-        {
-            winText.text = "";
-        }        
-    }
-
 }

@@ -3,10 +3,21 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
+    public static GameManager instance = null;
     public LevelManager levelScript;
 
-	void Awake ()
+	void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+
+        DontDestroyOnLoad(gameObject);
         levelScript = GetComponent<LevelManager>();
         InitGame();
 	}
