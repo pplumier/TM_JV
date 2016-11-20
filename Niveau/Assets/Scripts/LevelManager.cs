@@ -84,14 +84,14 @@ public class LevelManager : MonoBehaviour {
                     for (int l = 0; l < roomSize; l++)
                     {
                         GameObject toInstantiateTile = floorTiles[Room, Random.Range(0, sizeFloorRoomTiles[Room])];
-                        GameObject instanceTile = Instantiate(toInstantiateTile, new Vector3(x * tileSize * roomSize + m, 0f, y * tileSize * roomSize + l), Quaternion.identity) as GameObject;
+                        GameObject instanceTile = Instantiate(toInstantiateTile, new Vector3((x * roomSize + m) * tileSize, 0f, (y * roomSize + l) * tileSize), Quaternion.identity) as GameObject;
                         instanceTile.transform.SetParent(levelHolder);
 
                         if ((x == 0 && m == 0) || (x == columns - 1 && m == roomSize - 1))
                         {
                             for (int k = (int)(-tileSize * 0.5f); k < (int)(tileSize * 0.5f) + 1; k++)
                             {
-                                GameObject instanceWall = Instantiate(walls[0], new Vector3((x + ((x == 0) ? -0.5f : 0.5f)) * tileSize * roomSize, 0f, y * tileSize * roomSize + k), Quaternion.identity) as GameObject;
+                                GameObject instanceWall = Instantiate(walls[0], new Vector3((x * roomSize + ((x == 0) ? 0 : roomSize) - 0.5f) * tileSize, 0f, y * tileSize * roomSize + k), Quaternion.identity) as GameObject;
                                 instanceWall.transform.SetParent(levelHolder);
                             }
                         }
@@ -100,7 +100,7 @@ public class LevelManager : MonoBehaviour {
                         {
                             for (int k = (int)(-tileSize * 0.5f); k < (int)(tileSize * 0.5f) + 1; k++)
                             {
-                                GameObject instanceWall = Instantiate(walls[1], new Vector3(x * tileSize * roomSize + k, 0f, (y + ((y == 0) ? -0.5f : 0.5f)) * tileSize * roomSize), Quaternion.identity) as GameObject;
+                                GameObject instanceWall = Instantiate(walls[1], new Vector3(x * tileSize * roomSize + k, 0f, (y * roomSize + ((y == 0) ? 0 : roomSize) - 0.5f) * tileSize), Quaternion.identity) as GameObject;
                                 instanceWall.transform.SetParent(levelHolder);
                             }
                         }
