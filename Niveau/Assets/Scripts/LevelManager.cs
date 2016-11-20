@@ -20,6 +20,7 @@ public class LevelManager : MonoBehaviour {
 
     public int columns = 20;
     public int rows = 10;
+    public int nbWalls = 200;
     public GameObject[] floorTiles;
     public GameObject[] walls;
 
@@ -56,6 +57,25 @@ public class LevelManager : MonoBehaviour {
                     }
                 }
             }
+        }
+
+        int nbHorizontalWalls = Random.Range(1, nbWalls - 1);
+        int nbVerticalWalls = nbWalls - nbHorizontalWalls;
+
+        for (int k = 0; k < nbHorizontalWalls; k++)
+        {
+            int posX = Random.Range(1, columns - 1);
+            int posY = Random.Range(1, (rows - 1) * tileSize);
+            GameObject instanceInsideWall = Instantiate(walls[0], new Vector3((posX - 0.5f) * tileSize, 0f, posY), Quaternion.identity) as GameObject;
+            instanceInsideWall.transform.SetParent(levelHolder);
+        }
+
+        for (int k = 0; k < nbVerticalWalls; k++)
+        {
+            int posX = Random.Range(1, (columns - 1) * tileSize);
+            int posY = Random.Range(1, rows - 1);
+            GameObject instanceInsideWall = Instantiate(walls[1], new Vector3(posX, 0f, (posY - 0.5f) * tileSize), Quaternion.identity) as GameObject;
+            instanceInsideWall.transform.SetParent(levelHolder);
         }
     }
 }
