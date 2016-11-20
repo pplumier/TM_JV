@@ -112,19 +112,19 @@ public class LevelManager : MonoBehaviour {
         int nbHorizontalWalls = Random.Range(1, nbWalls - 1);
         int nbVerticalWalls = nbWalls - nbHorizontalWalls;
 
-        for (int k = 0; k < nbHorizontalWalls; k++)
+        for (int k = 0; k < nbHorizontalWalls; k++)// A MODIFIER
         {
-            int posX = Random.Range(1, columns - 1);
-            int posY = Random.Range(1, (rows - 1) * tileSize);
-            GameObject instanceInsideWall = Instantiate(walls[0], new Vector3((posX - 0.5f) * tileSize, 0f, posY), Quaternion.identity) as GameObject;
+            int posX = Random.Range(1, columns);
+            int posY = Random.Range(1, rows * tileSize - roomSize);
+            GameObject instanceInsideWall = Instantiate(walls[0], new Vector3((posX * roomSize - 0.5f) * tileSize, 0f, posY * roomSize), Quaternion.identity) as GameObject;
             instanceInsideWall.transform.SetParent(levelHolder);
         }
 
         for (int k = 0; k < nbVerticalWalls; k++)
         {
-            int posX = Random.Range(1, (columns - 1) * tileSize);
-            int posY = Random.Range(1, rows - 1);
-            GameObject instanceInsideWall = Instantiate(walls[1], new Vector3(posX, 0f, (posY - 0.5f) * tileSize), Quaternion.identity) as GameObject;
+            int posX = Random.Range(1, columns * tileSize - roomSize);
+            int posY = Random.Range(1, rows);
+            GameObject instanceInsideWall = Instantiate(walls[1], new Vector3(posX * roomSize, 0f, (posY * roomSize - 0.5f) * tileSize), Quaternion.identity) as GameObject;
             instanceInsideWall.transform.SetParent(levelHolder);
         }
     }
