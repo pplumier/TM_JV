@@ -24,11 +24,12 @@ public class PlayerController : MonoBehaviour {
         rb.AddForce(movement * speed);
     }
 
+    /*
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Pick Up"))
         {
 
         }
-    }
+    }*/
 }

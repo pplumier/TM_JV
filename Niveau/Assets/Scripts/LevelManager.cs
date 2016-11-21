@@ -37,6 +37,7 @@ public class LevelManager : MonoBehaviour {
     public GameObject[] floorRoom10Tiles = null;
     public GameObject[] floorRoom11Tiles = null;
     public GameObject[] walls;
+    public GameObject[] outsideWalls;
 
     private Transform levelHolder;
     private GameObject[,] floorTiles;
@@ -91,7 +92,7 @@ public class LevelManager : MonoBehaviour {
                         {
                             for (int k = (int)(-tileSize * 0.5f); k < (int)(tileSize * (roomSize - 0.5f)) + 1; k++)
                             {
-                                GameObject instanceWall = Instantiate(walls[0], new Vector3((x * roomSize + ((x == 0) ? 0 : roomSize) - 0.5f) * tileSize, walls[0].transform.localScale.y / 2f, y * tileSize * roomSize + k), Quaternion.identity) as GameObject;
+                                GameObject instanceWall = Instantiate(outsideWalls[0], new Vector3((x * roomSize + ((x == 0) ? 0 : roomSize) - 0.5f) * tileSize, outsideWalls[0].transform.localScale.y / 2f, y * tileSize * roomSize + k), Quaternion.identity) as GameObject;
                                 instanceWall.transform.SetParent(levelHolder);
                             }
                         }
@@ -100,7 +101,7 @@ public class LevelManager : MonoBehaviour {
                         {
                             for (int k = (int)(-tileSize * 0.5f); k < (int)(tileSize * (roomSize - 0.5f)) + 1; k++)
                             {
-                                GameObject instanceWall = Instantiate(walls[1], new Vector3(x * tileSize * roomSize + k, walls[1].transform.localScale.y / 2f, (y * roomSize + ((y == 0) ? 0 : roomSize) - 0.5f) * tileSize), Quaternion.identity) as GameObject;
+                                GameObject instanceWall = Instantiate(outsideWalls[1], new Vector3(x * tileSize * roomSize + k, outsideWalls[1].transform.localScale.y / 2f, (y * roomSize + ((y == 0) ? 0 : roomSize) - 0.5f) * tileSize), Quaternion.identity) as GameObject;
                                 instanceWall.transform.SetParent(levelHolder);
                             }
                         }
