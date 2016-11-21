@@ -6,6 +6,11 @@ public class RewardRotation : MonoBehaviour {
 
     public Text message;
 
+    void Start()
+    {
+        message.text = "";
+    }
+
     void Update()
     {
         transform.Rotate(new Vector3(60, 60, 60) * Time.deltaTime);

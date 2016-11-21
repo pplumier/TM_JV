@@ -38,10 +38,13 @@ public class LevelManager : MonoBehaviour {
     public GameObject[] floorRoom11Tiles = null;
     public GameObject[] walls;
     public GameObject[] outsideWalls;
+    public GameObject goal;
 
     private Transform levelHolder;
     private GameObject[,] floorTiles;
     private int[] sizeFloorRoomTiles;
+
+
 
     void InitialiseFloorTiles(GameObject[] floorRoomTiles, int number)
     {
@@ -55,7 +58,7 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-    public void LevelSetup()
+    void FloorSetup()
     {
         floorTiles = new GameObject[nbTypeTiles, maxNbTilesByRoom];
         sizeFloorRoomTiles = new int[nbTypeTiles];
@@ -71,8 +74,6 @@ public class LevelManager : MonoBehaviour {
         InitialiseFloorTiles(floorRoom9Tiles, 9);
         InitialiseFloorTiles(floorRoom10Tiles, 10);
         InitialiseFloorTiles(floorRoom11Tiles, 11);
-
-        levelHolder = new GameObject("Level").transform;
 
         for (int x = 0; x < columns; x++)
         {
@@ -109,14 +110,17 @@ public class LevelManager : MonoBehaviour {
                 }
             }
         }
+    }
 
+    void InsideWallSetup()
+    {
         int nbHorizontalWalls = Random.Range(nbWalls / 4, 3 * nbWalls / 4);
         int nbVerticalWalls = nbWalls - nbHorizontalWalls;
 
         for (int k = 0; k < nbHorizontalWalls; k++)
         {
             int posX = Random.Range(1, columns);
-            int posY = Random.Range((int)(-tileSize * 0.5f), (int)((rows  * roomSize - 0.5f) * tileSize + 1));
+            int posY = Random.Range((int)(-tileSize * 0.5f), (int)((rows * roomSize - 0.5f) * tileSize + 1));
             GameObject instanceInsideWall = Instantiate(walls[0], new Vector3((posX * roomSize - 0.5f) * tileSize, walls[0].transform.localScale.y / 2f, posY), Quaternion.identity) as GameObject;
             instanceInsideWall.transform.SetParent(levelHolder);
         }
@@ -128,5 +132,20 @@ public class LevelManager : MonoBehaviour {
             GameObject instanceInsideWall = Instantiate(walls[1], new Vector3(posX, walls[1].transform.localScale.y / 2f, (posY * roomSize - 0.5f) * tileSize), Quaternion.identity) as GameObject;
             instanceInsideWall.transform.SetParent(levelHolder);
         }
+    }
+
+
+    public void LevelSetup()
+    {
+        levelHolder = new GameObject("Level").transform;
+
+        FloorSetup();
+        InsideWallSetup();
+
+        int posX = 5;// MODIF COORD APPARTION
+        int posY = 5;
+        GameObject instanceGoal = Instantiate(goal, new Vector3(posX, goal.transform.localScale.y / 2f, posY), Quaternion.identity) as GameObject;
+        /*instanceGoal.AddComponent<>;*/ // MODIF AJOUT COMPOSANT POUR LE SCRIPT AVEC LE TEXTE
+        instanceGoal.transform.SetParent(levelHolder);
     }
 }
