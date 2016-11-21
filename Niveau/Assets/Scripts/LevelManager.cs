@@ -142,10 +142,9 @@ public class LevelManager : MonoBehaviour {
         FloorSetup();
         InsideWallSetup();
 
-        int posX = 5;// MODIF COORD APPARTION
-        int posY = 5;
-        GameObject instanceGoal = Instantiate(goal, new Vector3(posX, goal.transform.localScale.y / 2f, posY), Quaternion.identity) as GameObject;
-        /*instanceGoal.AddComponent<>;*/ // MODIF AJOUT COMPOSANT POUR LE SCRIPT AVEC LE TEXTE
-        instanceGoal.transform.SetParent(levelHolder);
+        int posX = Random.Range(1, columns * roomSize);
+        int posY = Random.Range(1, rows * roomSize);
+        GameObject instanceGoal = Instantiate(goal, new Vector3(posX * tileSize, goal.transform.localScale.y * 3f / 4f, posY * tileSize), Quaternion.identity) as GameObject;
+        //instanceGoal.transform.SetParent(levelHolder);
     }
 }

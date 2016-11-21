@@ -20,8 +20,10 @@ public class RewardRotation : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
+            Debug.Log(message.text);
             message.text = ":-D\nYou WIN!!!";
             gameObject.SetActive(false);
+            Debug.Log(message.text);
         }
     }
 }
