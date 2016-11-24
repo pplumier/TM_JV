@@ -22,6 +22,8 @@ public class SeeLight : MonoBehaviour {
             Vector3 dir = lightIntersection[i] - transform.position;
             float dist = dir.magnitude - 0.1f;
             dir = dir.normalized;
+            if (Vector3.Dot(transform.forward, dir) < 0) // If light is behind
+                continue;
             if (!Physics.Raycast(transform.position, dir, dist))
             {
                 seeLight = true;
