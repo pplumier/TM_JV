@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using UnityEditor;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
@@ -25,6 +26,7 @@ public class LevelManager : MonoBehaviour {
     public int maxNbTilesByRoom;
     public int tileSize = 10;
     public int roomSize = 3;
+    public int nbGoals = 20;
     public GameObject[] floorRoom1Tiles = null;
     public GameObject[] floorRoom2Tiles = null;
     public GameObject[] floorRoom3Tiles = null;
@@ -41,6 +43,7 @@ public class LevelManager : MonoBehaviour {
     public GameObject goal;
 
     private Transform levelHolder;
+    private Transform goalHolder;
     private GameObject[,] floorTiles;
     private int[] sizeFloorRoomTiles;
 
@@ -138,13 +141,26 @@ public class LevelManager : MonoBehaviour {
     public void LevelSetup()
     {
         levelHolder = new GameObject("Level").transform;
+        goalHolder = new GameObject("Goals").transform;
+        goalHolder.transform.SetParent(GameObject.Find("Canvas").transform);
+        goalHolder.transform.localPosition = new Vector3(0f, 0f, 0f);
 
         FloorSetup();
         InsideWallSetup();
 
-        int posX = Random.Range(1, columns * roomSize);
-        int posY = Random.Range(1, rows * roomSize);
-        GameObject instanceGoal = Instantiate(goal, new Vector3(posX * tileSize, goal.transform.localScale.y * 3f / 4f, posY * tileSize), Quaternion.identity) as GameObject;
-        //instanceGoal.transform.SetParent(levelHolder);
+        NavMeshBuilder.BuildNavMesh();
+        NavMeshPath path = new NavMeshPath();
+
+        for (int k = 0; k < nbGoals; k++)
+        {
+            int posX = Random.Range(1, columns * roomSize);
+            int posY = Random.Range(1, rows * roomSize);
+
+            if (NavMesh.CalculatePath(new Vector3(0f, 0f, 0f), new Vector3(posX, 0f, posY), NavMesh.AllAreas, path))
+            {
+                GameObject instanceGoal = Instantiate(goal, new Vector3(posX * tileSize, goal.transform.localScale.y * 3f / 4f, posY * tileSize), Quaternion.identity) as GameObject;
+                instanceGoal.transform.SetParent(levelHolder);
+            }
+        }
     }
 }

@@ -5,10 +5,15 @@ using System.Collections;
 public class RewardRotation : MonoBehaviour {
 
     public Text message;
+    private Text nouveau;
 
     void Start()
     {
         message.text = "";
+        nouveau = Instantiate(message) as Text;
+        nouveau.transform.SetParent(GameObject.Find("Goals").transform);
+        //nouveau.transform.SetParent(GameObject.Find("Canvas").transform);
+        nouveau.rectTransform.localPosition = new Vector3(0f, 0f, 0f);
     }
 
     void Update()
@@ -20,10 +25,9 @@ public class RewardRotation : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
-            Debug.Log(message.text);
             message.text = ":-D\nYou WIN!!!";
+            nouveau.text = ":-D\nYou WIN!!!";
             gameObject.SetActive(false);
-            Debug.Log(message.text);
         }
     }
 }
