@@ -25,7 +25,6 @@ public class RewardRotation : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
-            message.text = ":-D\nYou WIN!!!";
             nouveau.text = ":-D\nYou WIN!!!";
             gameObject.SetActive(false);
         }
