@@ -156,7 +156,9 @@ public class LevelManager : MonoBehaviour {
             int posX = Random.Range(1, columns * roomSize);
             int posY = Random.Range(1, rows * roomSize);
 
-            if (NavMesh.CalculatePath(new Vector3(0f, 0f, 0f), new Vector3(posX, 0f, posY), NavMesh.AllAreas, path))
+            Debug.Log(NavMesh.CalculatePath(new Vector3(0f, 0f, 0f), new Vector3(posX, 0f, posY), NavMesh.GetAreaFromName("walkable"), path) + " || " + NavMesh.CalculatePath(new Vector3(0f, 0f, 0f), new Vector3(posX, 0f, posY), NavMesh.AllAreas, path));
+
+            if (NavMesh.CalculatePath(new Vector3(0f, 0f, 0f), new Vector3(posX, 0f, posY), NavMesh.GetAreaFromName("walkable"), path))//NavMesh.AllAreas
             {
                 GameObject instanceGoal = Instantiate(goal, new Vector3(posX * tileSize, goal.transform.localScale.y * 3f / 4f, posY * tileSize), Quaternion.identity) as GameObject;
                 instanceGoal.transform.SetParent(levelHolder);
