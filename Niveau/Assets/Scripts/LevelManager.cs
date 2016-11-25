@@ -177,6 +177,7 @@ public class LevelManager : MonoBehaviour {
 
     void OneWall()
     {
+        int nbDebug = 0;
         for (int j = 0; j < insideHorizontalWallList.Count; j++)
         {
             GameObject wall = insideHorizontalWallList[j];
@@ -209,11 +210,22 @@ public class LevelManager : MonoBehaviour {
                                 float posMin = (posY < otherPosY) ? posY : otherPosY;
                                 float scaleMin = (posY < otherPosY) ? scaleY : otherScaleY;
                                 float scaleMax = (posY < otherPosY) ? otherScaleY : scaleY;
-                                //Debug.Log("1er mur : " + posX + "  " + posY + " || " + "2eme mur : " + otherPosX + "  " + otherPosY);
-                                posY = posMin + (scaleMax / 2f - chevauchement) * Mathf.Abs(posY - otherPosY) / ((scaleMax / 2f - chevauchement) + (scaleMin / 2f - chevauchement));
+                                if (nbDebug < 100)
+                                {
+                                    float debug3 = (scaleY + otherScaleY) / 2f;
+                                    float debug4 = Mathf.Abs(posY - otherPosY);
+                                    float debug5 = posY - otherPosY;
+                                    Debug.Log("Pour 1er mur : posX " + posX + " posY " + posY + " scaleY " + scaleY + " || " + "2eme mur : otherPosX " + otherPosX + " otherPosY " + otherScaleY + " otherScaleY " + otherScaleY +
+                                        "\net chevauchement " + chevauchement + " (scaleY + otherScaleY) / 2f " + debug3 + " Mathf.Abs(posY - otherPosY) " + debug4 + " posY - otherPosY " + debug5);
+                                }
+                                posY = posMin + (scaleMax / 2f - chevauchement) / ((scaleMax / 2f - chevauchement) + (scaleMin / 2f - chevauchement)) * Mathf.Abs(posY - otherPosY);
                                 scaleY = (scaleY + otherScaleY) / 2f + Mathf.Abs(posY - otherPosY);
                                 isInInsideHorizontalWallList[k] = false;
-                                //Debug.Log("nouveau posY " + posY + "  et nouveau scaleY " + scaleY);
+                                if (nbDebug < 100)
+                                {
+                                    Debug.Log("nouveau posY " + posY + "  et nouveau scaleY " + scaleY + "  si NAN " + (scaleMax / 2f - chevauchement) + (scaleMin / 2f - chevauchement));
+                                    nbDebug++;
+                                }
                                 removeHorizontalWallList.Add(otherWall);
                                 Destroy(otherWall);
                                 --debug2;
