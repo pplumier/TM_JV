@@ -12,7 +12,6 @@ public class RewardRotation : MonoBehaviour {
         message.text = "";
         nouveau = Instantiate(message) as Text;
         nouveau.transform.SetParent(GameObject.Find("Goals").transform);
-        //nouveau.transform.SetParent(GameObject.Find("Canvas").transform);
         nouveau.rectTransform.localPosition = new Vector3(0f, 0f, 0f);
     }
 
