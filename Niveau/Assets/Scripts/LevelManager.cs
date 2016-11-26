@@ -132,7 +132,7 @@ public class LevelManager : MonoBehaviour {
         }
 
         debug = nbHorizontalWalls;
-        debug2 = nbHorizontalWalls;
+        debug2 = nbVerticalWalls;
 
         for (int k = 0; k < nbHorizontalWalls; k++)
         {
@@ -177,7 +177,6 @@ public class LevelManager : MonoBehaviour {
 
     void OneWall()
     {
-        int nbDebug = 0;
         for (int j = 0; j < insideHorizontalWallList.Count; j++)
         {
             GameObject wall = insideHorizontalWallList[j];
@@ -186,7 +185,6 @@ public class LevelManager : MonoBehaviour {
                 bool newChange = true;
                 float posX = wall.transform.localPosition.x;
                 float posY = wall.transform.localPosition.z;
-                //float scaleX = wall.transform.localScale.x;
                 float scaleY = wall.transform.localScale.z;
 
                 while (newChange)
@@ -205,7 +203,7 @@ public class LevelManager : MonoBehaviour {
 
                             if (otherPosX == posX && chevauchement >= 0)
                             {
-                                /* vérification que le deuxième mur ne soit pas inclus dans le premier */
+                                // vérification que le deuxième mur ne soit pas inclus dans le premier
                                 if (otherPosY - otherScaleY < posY - scaleY || otherPosY + otherScaleY > posY + scaleY)
                                 {
                                     newChange = true;
@@ -213,26 +211,13 @@ public class LevelManager : MonoBehaviour {
                                     float posMin = (posY < otherPosY) ? posY : otherPosY;
                                     float scaleMin = (posY < otherPosY) ? scaleY : otherScaleY;
                                     float scaleMax = (posY < otherPosY) ? otherScaleY : scaleY;
-                                    if (nbDebug < 100)
-                                    {
-                                        float debug3 = (scaleY + otherScaleY) / 2f;
-                                        float debug4 = Mathf.Abs(posY - otherPosY);
-                                        float debug5 = posY - otherPosY;
-                                        Debug.Log("Pour 1er mur : num " + j + " posX " + posX + " posY " + posY + " scaleY " + scaleY + " || " + "2eme mur : num " + k + "  otherPosX " + otherPosX + " otherPosY " + otherPosY + " otherScaleY " + otherScaleY +
-                                            "\net chevauchement " + chevauchement + " (scaleY + otherScaleY) / 2f " + debug3 + " Mathf.Abs(posY - otherPosY) " + debug4 + " posY - otherPosY " + debug5);
-                                    }
+
                                     posY = posMin + (scaleMax / 2f - chevauchement) / ((scaleMax / 2f - chevauchement) + (scaleMin / 2f - chevauchement)) * Mathf.Abs(posY - otherPosY);
                                     scaleY = (scaleY + otherScaleY) / 2f + Mathf.Abs(posY - otherPosY);
-                                    if (nbDebug < 100)
-                                    {
-                                        Debug.Log("nouveau posY " + posY + "  et nouveau scaleY " + scaleY + "  si NAN " + (scaleMax / 2f - chevauchement) + "  + " + (scaleMin / 2f - chevauchement));
-                                        nbDebug++;
-                                    }
                                 }
                                 isInInsideHorizontalWallList[k] = false;
                                 removeHorizontalWallList.Add(otherWall);
                                 Destroy(otherWall);
-                                --debug2;
                             }
                         }
                     }
@@ -248,6 +233,66 @@ public class LevelManager : MonoBehaviour {
         }
 
         removeHorizontalWallList.Clear();
+
+
+
+
+        for (int j = 0; j < insideVerticalWallList.Count; j++)
+        {
+            GameObject wall = insideVerticalWallList[j];
+            if (isInInsideVerticalWallList[j])
+            {
+                bool newChange = true;
+                float posX = wall.transform.localPosition.x;
+                float posY = wall.transform.localPosition.z;
+                float scaleX = wall.transform.localScale.x;
+
+                while (newChange)
+                {
+                    newChange = false;
+                    for (int k = 0; k < insideVerticalWallList.Count; k++)
+                    {
+                        GameObject otherWall = insideVerticalWallList[k];
+                        if (isInInsideVerticalWallList[k] && wall != otherWall)
+                        {
+                            float otherPosX = otherWall.transform.localPosition.x;
+                            float otherPosY = otherWall.transform.localPosition.z;
+                            float otherscaleX = otherWall.transform.localScale.x;
+
+                            float chevauchement = ((scaleX + otherscaleX) / 2f - Mathf.Abs(posX - otherPosX)) / 2f;
+
+                            if (otherPosY == posY && chevauchement >= 0)
+                            {
+                                // vérification que le deuxième mur ne soit pas inclus dans le premier
+                                if (otherPosX - otherscaleX < posX - scaleX || otherPosX + otherscaleX > posX + scaleX)
+                                {
+                                    newChange = true;
+
+                                    float posMin = (posX < otherPosX) ? posX : otherPosX;
+                                    float scaleMin = (posX < otherPosX) ? scaleX : otherscaleX;
+                                    float scaleMax = (posX < otherPosX) ? otherscaleX : scaleX;
+
+                                    posX = posMin + (scaleMax / 2f - chevauchement) / ((scaleMax / 2f - chevauchement) + (scaleMin / 2f - chevauchement)) * Mathf.Abs(posX - otherPosX);
+                                    scaleX = (scaleX + otherscaleX) / 2f + Mathf.Abs(posX - otherPosX);
+                                }
+                                isInInsideVerticalWallList[k] = false;
+                                removeVerticalWallList.Add(otherWall);
+                                Destroy(otherWall);
+                            }
+                        }
+                    }
+                }
+                wall.transform.localPosition = new Vector3(posX, wall.transform.localPosition.y, posY);
+                wall.transform.localScale = new Vector3(scaleX, wall.transform.localScale.y, wall.transform.localScale.z);
+            }
+        }
+
+        for (int j = 0; j < removeVerticalWallList.Count; j++)
+        {
+            insideVerticalWallList.Remove(removeVerticalWallList[j]);
+        }
+
+        removeVerticalWallList.Clear();
     }
 
 
@@ -265,7 +310,8 @@ public class LevelManager : MonoBehaviour {
         FloorSetup();
         InsideWallSetup();
         OneWall();
-        //GoalSetup();
-        Debug.Log("avant : " + debug + ", après : " + insideHorizontalWallList.Count + " || " + debug2 + " test " + removeHorizontalWallList.Count);
+        GoalSetup();
+        Debug.Log("Horizontal avant : " + debug + ", après : " + insideHorizontalWallList.Count + " test " + removeHorizontalWallList.Count);
+        Debug.Log("Vertical avant : " + debug2 + ", après : " + insideVerticalWallList.Count + " test " + removeVerticalWallList.Count);
     }
 }
