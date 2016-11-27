@@ -14,6 +14,7 @@ public class LevelManager : MonoBehaviour {
     public int tileSize = 10;
     public int roomSize = 3;
     public int nbGoals = 20;
+    public int nbBarricades = 50;
     public GameObject[] floorRoom1Tiles = null;
     public GameObject[] floorRoom2Tiles = null;
     public GameObject[] floorRoom3Tiles = null;
@@ -28,6 +29,7 @@ public class LevelManager : MonoBehaviour {
     public GameObject[] walls;
     public GameObject[] outsideWalls;
     public GameObject goal;
+    public GameObject[] AllBarricades;
 
     private Transform levelHolder;
     private Transform goalHolder;
@@ -38,6 +40,7 @@ public class LevelManager : MonoBehaviour {
     private List<GameObject> insideVerticalWallList;
     private List<GameObject> removeHorizontalWallList;
     private List<GameObject> removeVerticalWallList;
+    private bool[,] barricadePositionList;
     private bool[] isInInsideHorizontalWallList;
     private bool[] isInInsideVerticalWallList;
     private int debug;
@@ -161,8 +164,14 @@ public class LevelManager : MonoBehaviour {
 
         for (int k = 0; k < nbGoals; k++)
         {
-            int posX = Random.Range(1, columns * roomSize);
-            int posY = Random.Range(1, rows * roomSize);
+            int posX = Random.Range(0, columns * roomSize);
+            int posY = Random.Range(0, rows * roomSize);
+
+            while (posX < columns / 2 * roomSize && posY < rows / 2 * roomSize)
+            {
+                posX = Random.Range(0, columns * roomSize);
+                posY = Random.Range(0, rows * roomSize);
+            }
 
             //Debug.Log(posX * tileSize + " || " + posY * tileSize + " || " + NavMesh.CalculatePath(new Vector3(0f, 0f, 0f), new Vector3(posX * tileSize, 0f, posY * tileSize), NavMesh.GetAreaFromName("walkable"), path) + " || " + NavMesh.CalculatePath(new Vector3(0f, 0f, 0f), new Vector3(posX * tileSize, 0f, posY * tileSize), NavMesh.AllAreas, path));
 
@@ -170,6 +179,7 @@ public class LevelManager : MonoBehaviour {
             {
                 GameObject instanceGoal = Instantiate(goal, new Vector3(posX * tileSize, goal.transform.localScale.y * 3f / 4f, posY * tileSize), Quaternion.identity) as GameObject;
                 instanceGoal.transform.SetParent(levelHolder);
+                barricadePositionList[posX, posY] = false;
             }
         }
     }
@@ -296,6 +306,28 @@ public class LevelManager : MonoBehaviour {
     }
 
 
+    void BarricadeSetup()
+    {
+        for (int k = 0; k < nbBarricades && k < columns * roomSize * rows * roomSize - nbGoals - 1; k++)
+        {
+            int posX = Random.Range(0, columns * roomSize);
+            int posY = Random.Range(0, rows * roomSize);
+
+            while ((posX == 0 && posY == 0) || !barricadePositionList[posX, posY])
+            {
+                posX = Random.Range(0, columns * roomSize);
+                posY = Random.Range(0, rows * roomSize);
+            }
+
+            barricadePositionList[posX, posY] = false;
+
+            int numBarricade = Random.Range(0, AllBarricades.Length);
+            GameObject instanceBarricade = Instantiate(AllBarricades[numBarricade], new Vector3(posX * tileSize, AllBarricades[numBarricade].transform.localScale.y / 2f, posY * tileSize), Quaternion.identity) as GameObject;
+            instanceBarricade.transform.SetParent(levelHolder);
+        }
+    }
+
+
     public void LevelSetup()
     {
         levelHolder = new GameObject("Level").transform;
@@ -306,11 +338,21 @@ public class LevelManager : MonoBehaviour {
         insideVerticalWallList = new List<GameObject>();
         removeHorizontalWallList = new List<GameObject>();
         removeVerticalWallList = new List<GameObject>();
+        barricadePositionList = new bool[columns * roomSize, rows * roomSize];
+
+        for (int x = 0; x < columns * roomSize; x++)
+        {
+            for (int y = 0; y < rows * roomSize; y++)
+            {
+                barricadePositionList[x, y] = true;
+            }
+        }
 
         FloorSetup();
         InsideWallSetup();
         OneWall();
         GoalSetup();
+        BarricadeSetup();
         Debug.Log("Horizontal avant : " + debug + ", après : " + insideHorizontalWallList.Count + " test " + removeHorizontalWallList.Count);
         Debug.Log("Vertical avant : " + debug2 + ", après : " + insideVerticalWallList.Count + " test " + removeVerticalWallList.Count);
     }
