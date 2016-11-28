@@ -15,6 +15,7 @@ public class LevelManager : MonoBehaviour {
     public int roomSize = 3;
     public int nbGoals = 20;
     public int nbBarricades = 50;
+    public GameObject roof;
     public GameObject[] floorRoom1Tiles = null;
     public GameObject[] floorRoom2Tiles = null;
     public GameObject[] floorRoom3Tiles = null;
@@ -76,10 +77,15 @@ public class LevelManager : MonoBehaviour {
         InitialiseFloorTiles(floorRoom10Tiles, 10);
         InitialiseFloorTiles(floorRoom11Tiles, 11);
 
+        roof.transform.localScale = new Vector3((float)tileSize / (float)10 * roomSize, -1f, (float)tileSize / (float)10 * roomSize);
+
         for (int x = 0; x < columns; x++)
         {
             for (int y = 0; y < rows; y++)
             {
+                GameObject instanceRoof = Instantiate(roof, new Vector3(((x + 0.5f) * roomSize - 0.5f) * tileSize, outsideWalls[0].transform.localScale.y, ((y + 0.5f) * roomSize - 0.5f) * tileSize), Quaternion.identity) as GameObject;
+                instanceRoof.transform.SetParent(levelHolder);
+
                 int Room = Random.Range(0, nbTypeTiles);
 
                 for (int m = 0; m < roomSize; m++)
