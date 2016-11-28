@@ -46,6 +46,7 @@ public class LevelManager : MonoBehaviour {
     private bool[] isInInsideVerticalWallList;
     private int debug;
     private int debug2;
+    private const int planSize = 10;
 
     void InitialiseFloorTiles(GameObject[] floorRoomTiles, int number)
     {
@@ -77,7 +78,7 @@ public class LevelManager : MonoBehaviour {
         InitialiseFloorTiles(floorRoom10Tiles, 10);
         InitialiseFloorTiles(floorRoom11Tiles, 11);
 
-        roof.transform.localScale = new Vector3((float)tileSize / (float)10 * roomSize, -1f, (float)tileSize / (float)10 * roomSize);
+        roof.transform.localScale = new Vector3((float)tileSize / (float)planSize * roomSize, -1f, (float)tileSize / (float)planSize * roomSize);
 
         for (int x = 0; x < columns; x++)
         {
@@ -93,7 +94,7 @@ public class LevelManager : MonoBehaviour {
                     for (int l = 0; l < roomSize; l++)
                     {
                         GameObject toInstantiateTile = floorTiles[Room, Random.Range(0, sizeFloorRoomTiles[Room])];
-                        toInstantiateTile.transform.localScale = new Vector3((float)tileSize / (float)10, toInstantiateTile.transform.localScale.y, (float)tileSize / (float)10);
+                        toInstantiateTile.transform.localScale = new Vector3((float)tileSize / (float)planSize, toInstantiateTile.transform.localScale.y, (float)tileSize / (float)planSize);
                         GameObject instanceTile = Instantiate(toInstantiateTile, new Vector3((x * roomSize + m) * tileSize, 0f, (y * roomSize + l) * tileSize), Quaternion.identity) as GameObject;
                         instanceTile.transform.SetParent(levelHolder);
                     }
@@ -228,8 +229,8 @@ public class LevelManager : MonoBehaviour {
                                     float scaleMin = (posY < otherPosY) ? scaleY : otherScaleY;
                                     float scaleMax = (posY < otherPosY) ? otherScaleY : scaleY;
 
-                                    posY = posMin + (scaleMax / 2f - chevauchement) / ((scaleMax / 2f - chevauchement) + (scaleMin / 2f - chevauchement)) * Mathf.Abs(posY - otherPosY);
                                     scaleY = (scaleY + otherScaleY) / 2f + Mathf.Abs(posY - otherPosY);
+                                    posY = posMin + (scaleY - scaleMin) / 2f;
                                 }
                                 isInInsideHorizontalWallList[k] = false;
                                 removeHorizontalWallList.Add(otherWall);
@@ -288,8 +289,8 @@ public class LevelManager : MonoBehaviour {
                                     float scaleMin = (posX < otherPosX) ? scaleX : otherscaleX;
                                     float scaleMax = (posX < otherPosX) ? otherscaleX : scaleX;
 
-                                    posX = posMin + (scaleMax / 2f - chevauchement) / ((scaleMax / 2f - chevauchement) + (scaleMin / 2f - chevauchement)) * Mathf.Abs(posX - otherPosX);
                                     scaleX = (scaleX + otherscaleX) / 2f + Mathf.Abs(posX - otherPosX);
+                                    posX = posMin + (scaleX - scaleMin) / 2f;
                                 }
                                 isInInsideVerticalWallList[k] = false;
                                 removeVerticalWallList.Add(otherWall);
@@ -356,8 +357,8 @@ public class LevelManager : MonoBehaviour {
 
         FloorSetup();
         InsideWallSetup();
-        OneWall();
         GoalSetup();
+        OneWall();
         BarricadeSetup();
         Debug.Log("Horizontal avant : " + debug + ", après : " + insideHorizontalWallList.Count + " test " + removeHorizontalWallList.Count);
         Debug.Log("Vertical avant : " + debug2 + ", après : " + insideVerticalWallList.Count + " test " + removeVerticalWallList.Count);
