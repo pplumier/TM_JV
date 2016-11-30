@@ -3,13 +3,19 @@ using System.Collections;
 
 public class Door : MonoBehaviour {
 
-    private void OnTriggerEnter(Collider obj)
+    private void OnTriggerEnter(Collider other)
     {
-        GetComponent<Animation>().Play("open");
+        if (other.tag == "Player")
+        {
+            GetComponent<Animation>().Play("open");
+        }
     }
 
-    private void OnTriggerExit(Collider obj)
+    private void OnTriggerExit(Collider other)
     {
-        GetComponent<Animation>().Play("close");
+        if (other.tag == "Player")
+        {
+            GetComponent<Animation>().Play("close");
+        }
     }
 }
