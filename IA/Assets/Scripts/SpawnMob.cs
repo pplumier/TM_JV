@@ -14,9 +14,10 @@ public class SpawnMob : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Time.fixedTime - lastTime > 1)
+        if (Time.fixedTime - lastTime > 5f && transform.childCount < 1000)
         {
             GameObject go = Instantiate(toSpawn);
+            go.transform.parent = transform;
             go.GetComponent<Poursuite>().joueur = player;
             go.GetComponent<SeeLight>().light = light;
             lastTime = Time.fixedTime;
