@@ -16,6 +16,7 @@ public class LevelManager : MonoBehaviour {
     public int nbGoals = 20;
     public int nbBarricades = 50;
     public GameObject roof;
+    public GameObject transitionLevelFloor;
     public GameObject door;
     public GameObject[] floorRoom1Tiles = null;
     public GameObject[] floorRoom2Tiles = null;
@@ -356,6 +357,29 @@ public class LevelManager : MonoBehaviour {
     }
 
 
+    void TransitionLevelSetup(int nextLevelDoor)
+    {
+        GameObject toInstantiateTile = transitionLevelFloor;
+
+        for (int l = 0; l < roomSize; l++)
+        {
+            toInstantiateTile.transform.localScale = new Vector3((float)tileSize / (float)planSize, toInstantiateTile.transform.localScale.y, (float)tileSize / (float)planSize);
+            GameObject instanceTile = Instantiate(toInstantiateTile, new Vector3(((nextLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize, 0f, ((rows - 1) * (roomSize + 1) + l) * tileSize), Quaternion.identity) as GameObject;
+            instanceTile.transform.SetParent(levelHolder);
+
+            GameObject instanceRoof = Instantiate(roof, new Vector3(((nextLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize, outsideWalls[0].transform.localScale.y, ((rows - 1) * (roomSize + 1) + l) * tileSize), Quaternion.identity) as GameObject;
+            instanceRoof.transform.SetParent(levelHolder);
+
+            outsideWalls[0].transform.localScale = new Vector3(outsideWalls[0].transform.localScale.x, outsideWalls[0].transform.localScale.y, tileSize);
+            GameObject instanceWall = Instantiate(outsideWalls[0], new Vector3(((nextLevelDoor + 0.5f) * roomSize - 1f) * tileSize, outsideWalls[0].transform.localScale.y / 2f, (columns * roomSize + l) * tileSize), Quaternion.identity) as GameObject;
+            instanceWall.transform.SetParent(levelHolder);
+
+            GameObject instanceOtherWall = Instantiate(outsideWalls[0], new Vector3((nextLevelDoor + 0.5f) * roomSize * tileSize, outsideWalls[0].transform.localScale.y / 2f, (columns * roomSize + l) * tileSize), Quaternion.identity) as GameObject;
+            instanceOtherWall.transform.SetParent(levelHolder);
+        }
+    }
+
+
     public void LevelSetup()
     {
         levelHolder = new GameObject("Level").transform;
@@ -383,6 +407,8 @@ public class LevelManager : MonoBehaviour {
         GoalSetup();
         OneWall();
         BarricadeSetup();
+        TransitionLevelSetup(nextLevelDoor);
+
         Debug.Log("Horizontal avant : " + debug + ", après : " + insideHorizontalWallList.Count + " test " + removeHorizontalWallList.Count);
         Debug.Log("Vertical avant : " + debug2 + ", après : " + insideVerticalWallList.Count + " test " + removeVerticalWallList.Count);
     }
