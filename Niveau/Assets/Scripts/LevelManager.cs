@@ -14,10 +14,12 @@ public class LevelManager : MonoBehaviour {
     public int tileSize = 10;
     public int roomSize = 3;
     public int nbGoals = 20;
+    public int nbLamps = 20;
     public int nbBarricades = 50;
     public GameObject roof;
     public GameObject transitionLevelFloor;
     public GameObject door;
+    public GameObject lamp;
     public GameObject[] floorRoom1Tiles = null;
     public GameObject[] floorRoom2Tiles = null;
     public GameObject[] floorRoom3Tiles = null;
@@ -44,6 +46,7 @@ public class LevelManager : MonoBehaviour {
     private List<GameObject> removeHorizontalWallList;
     private List<GameObject> removeVerticalWallList;
     private bool[,] barricadePositionList;
+    private bool[,] lampPositionList;
     private bool[] isInInsideHorizontalWallList;
     private bool[] isInInsideVerticalWallList;
     private int debug;
@@ -196,7 +199,7 @@ public class LevelManager : MonoBehaviour {
             int posX = Random.Range(0, columns * roomSize);
             int posY = Random.Range(0, rows * roomSize);
 
-            while (posX < columns / 2 * roomSize && posY < rows / 2 * roomSize)
+            while ((posX < columns / 2 * roomSize && posY < rows / 2 * roomSize) || !barricadePositionList[posX, posY])
             {
                 posX = Random.Range(0, columns * roomSize);
                 posY = Random.Range(0, rows * roomSize);
@@ -357,6 +360,26 @@ public class LevelManager : MonoBehaviour {
     }
 
 
+    void LampSetup()
+    {
+        for (int k = 0; k < nbLamps; k++)
+        {
+            int posX = Random.Range(0, columns * roomSize);
+            int posY = Random.Range(0, rows * roomSize);
+
+            while (!lampPositionList[posX, posY])
+            {
+                posX = Random.Range(0, columns * roomSize);
+                posY = Random.Range(0, rows * roomSize);
+            }
+
+            GameObject instanceLamp = Instantiate(lamp, new Vector3(posX * tileSize, outsideWalls[0].transform.localScale.y + lamp.transform.localScale.y /2f, posY * tileSize), Quaternion.identity) as GameObject;
+            instanceLamp.transform.SetParent(levelHolder);
+            lampPositionList[posX, posY] = false;
+        }
+    }
+
+
     void TransitionLevelSetup(int nextLevelDoor)
     {
         GameObject toInstantiateTile = transitionLevelFloor;
@@ -391,12 +414,14 @@ public class LevelManager : MonoBehaviour {
         removeHorizontalWallList = new List<GameObject>();
         removeVerticalWallList = new List<GameObject>();
         barricadePositionList = new bool[columns * roomSize, rows * roomSize];
+        lampPositionList = new bool[columns * roomSize, rows * roomSize];
 
         for (int x = 0; x < columns * roomSize; x++)
         {
             for (int y = 0; y < rows * roomSize; y++)
             {
                 barricadePositionList[x, y] = true;
+                lampPositionList[x, y] = true;
             }
         }
 
@@ -407,6 +432,7 @@ public class LevelManager : MonoBehaviour {
         GoalSetup();
         OneWall();
         BarricadeSetup();
+        LampSetup();
         TransitionLevelSetup(nextLevelDoor);
 
         Debug.Log("Horizontal avant : " + debug + ", après : " + insideHorizontalWallList.Count + " test " + removeHorizontalWallList.Count);
