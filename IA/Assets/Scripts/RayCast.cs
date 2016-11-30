@@ -17,8 +17,8 @@ public class RayCast : MonoBehaviour {
         lightIntersection.Clear();
         if (!spotlight.enabled)
             return;
-        for(float i = -1f; i < 1f; i += 0.1f)
-            for (float j = -0.5f; j < 0.5; j += 0.1f)
+        for(float i = -1f; i < 1f; i += 0.2f)
+            for (float j = -0.5f; j < 0.5; j += 0.2f)
             {
                 Ray ray = new Ray(transform.position, transform.forward + transform.up * i + transform.right * j);
                 RaycastHit hitInfo;

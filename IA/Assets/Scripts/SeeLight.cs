@@ -30,6 +30,6 @@ public class SeeLight : MonoBehaviour {
                 break;
             }
         }
-        Debug.Log(seeLight);
+        //Debug.Log(seeLight);
 	}
 }
