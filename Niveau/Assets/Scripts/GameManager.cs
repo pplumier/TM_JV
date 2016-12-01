@@ -83,7 +83,10 @@ public class GameManager : MonoBehaviour {
     {
         if (currentLevel + 1 < nbLevel)
         {
-            float oldPlayerPosX = ((GameObject.Find("Player").transform.localPosition.x) % tabLevelTileSize[currentLevel]) - 0.5f * tabLevelTileSize[currentLevel];
+            GameObject player = GameObject.Find("Player");
+            float oldPlayerPosX = (player.transform.localPosition.x % tabLevelTileSize[currentLevel]) - 0.5f * tabLevelTileSize[currentLevel];
+            player.transform.localPosition = new Vector3(0f, player.transform.localPosition.y, 0f);
+
             levelScript.DestroyLevel(currentLevel);
             ++currentLevel;
             levelScript.LevelSetup(currentLevel, tabLevelColums[currentLevel], tabLevelRows[currentLevel], tabLevelNbWalls[currentLevel],

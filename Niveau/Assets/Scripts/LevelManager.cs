@@ -538,7 +538,7 @@ public class LevelManager : MonoBehaviour {
 
         FloorSetup(nextLevelDoor, previousLevelDoor);
         InsideWallSetup();
-        GoalSetup();
+        //GoalSetup();
         OneWall();
         BarricadeSetup();
         LampSetup();
@@ -553,5 +553,6 @@ public class LevelManager : MonoBehaviour {
     {
         Destroy(GameObject.Find("Level"));
         Destroy(GameObject.Find("Goals"));
+        
     }
 }
