@@ -4,12 +4,13 @@ using System.Collections.Generic;
 
 public class SeeLight : MonoBehaviour {
 
-    public GameObject light;
+    GameObject light;
     List<Vector3> lightIntersection;
     public bool seeLight;
 
 	// Use this for initialization
 	void Start () {
+        light = GameObject.FindGameObjectWithTag("PlayerLight"); 
         lightIntersection = light.GetComponent<RayCast>().lightIntersection;
 	}
 	
