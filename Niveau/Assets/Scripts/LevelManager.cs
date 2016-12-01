@@ -6,16 +6,6 @@ using Random = UnityEngine.Random;
 
 public class LevelManager : MonoBehaviour {
 
-    public int columns = 20;
-    public int rows = 10;
-    public int nbWalls = 200;
-    public int nbTypeTiles;
-    public int maxNbTilesByRoom;
-    public int tileSize = 10;
-    public int roomSize = 3;
-    public int nbGoals = 20;
-    public int nbLamps = 20;
-    public int nbBarricades = 50;
     public GameObject roof;
     public GameObject transitionLevelFloor;
     public GameObject door;
@@ -53,6 +43,18 @@ public class LevelManager : MonoBehaviour {
     private int debug2;
     private const int planSize = 10;
     private const float sizeDoor = 7f;
+
+    private int numLevel = 0;
+    private int columns = 5;
+    private int rows = 5;
+    private int nbWalls = 400;
+    private int nbTypeTiles = 6;
+    private int maxNbTilesByRoom = 3;
+    private int tileSize = 10;
+    private int roomSize = 4;
+    private int nbGoals = 20;
+    private int nbLamps = 20;
+    private int nbBarricades = 50;
 
     void InitialiseFloorTiles(GameObject[] floorRoomTiles, int number)
     {
@@ -403,8 +405,21 @@ public class LevelManager : MonoBehaviour {
     }
 
 
-    public void LevelSetup()
+    public void LevelSetup(int levelNumLevel, int levelColums, int levelRows, int levelNbWalls, int levelNbTypeTiles, int levelMaxNbTilesByRoom, int levelTileSize,
+        int levelRoomSize, int levelNbGoals, int levelNbLamps, int levelNbBarricades)
     {
+        numLevel = levelNumLevel;
+        columns = levelColums;
+        rows = levelRows;
+        nbWalls = levelNbWalls;
+        nbTypeTiles = levelNbTypeTiles;
+        maxNbTilesByRoom = levelMaxNbTilesByRoom;
+        tileSize = levelTileSize;
+        roomSize = levelRoomSize;
+        nbGoals = levelNbGoals;
+        nbLamps = levelNbLamps;
+        nbBarricades = levelNbBarricades;
+
         levelHolder = new GameObject("Level").transform;
         goalHolder = new GameObject("Goals").transform;
         goalHolder.transform.SetParent(GameObject.Find("Canvas").transform);
