@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Poursuite : MonoBehaviour {
 
-    public GameObject joueur;
-    NavMeshAgent nm;
+    GameObject joueur;
+    UnityEngine.AI.NavMeshAgent nm;
     SeeLight sl;
     Vector3 lastPosition;
     Vector3 randomPosition;
@@ -12,8 +12,9 @@ public class Poursuite : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        joueur = GameObject.FindGameObjectWithTag("Player");
         lastPosition = transform.position;
-        nm = GetComponent<NavMeshAgent>();
+        nm = GetComponent<UnityEngine.AI.NavMeshAgent>();
         sl = GetComponent<SeeLight>();
         lastObserved = Time.fixedTime;
         randomPosition = Vector3.zero;
@@ -33,9 +34,9 @@ public class Poursuite : MonoBehaviour {
             else if(randomPosition == Vector3.zero)
             {
                 Vector3 randomDirection = Random.insideUnitSphere * 300;
-                NavMeshHit hit;
+                UnityEngine.AI.NavMeshHit hit;
                 randomDirection.y = 0;
-                NavMesh.SamplePosition(randomDirection, out hit, int.MaxValue, 1);
+                UnityEngine.AI.NavMesh.SamplePosition(randomDirection, out hit, int.MaxValue, 1);
                 randomPosition = hit.position;
                 nm.SetDestination(randomPosition);
             }
