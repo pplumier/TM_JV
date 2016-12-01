@@ -11,6 +11,7 @@ public class LevelManager : MonoBehaviour {
     public GameObject door;
     public GameObject closeDoor;
     public GameObject lamp;
+    public GameObject restartLevel;
     public GameObject[] floorRoom1Tiles = null;
     public GameObject[] floorRoom2Tiles = null;
     public GameObject[] floorRoom3Tiles = null;
@@ -203,7 +204,7 @@ public class LevelManager : MonoBehaviour {
             int posX = Random.Range(0, columns * roomSize);
             int posY = Random.Range(0, rows * roomSize);
 
-            while ((posX < columns / 2 * roomSize && posY < rows / 2 * roomSize) || !barricadePositionList[posX, posY])
+            while (/*posX < columns / 2 * roomSize && */posY < rows / 2 * roomSize || !barricadePositionList[posX, posY])
             {
                 posX = Random.Range(0, columns * roomSize);
                 posY = Random.Range(0, rows * roomSize);
@@ -384,7 +385,7 @@ public class LevelManager : MonoBehaviour {
     }
 
 
-    void TransitionLevelSetup(int nextLevelDoor, int previousLevelDoor)
+    void TransitionLevelSetup(int nextLevelDoor, int previousLevelDoor, float oldPlayerPosX)
     {
         GameObject toInstantiateTile = transitionLevelFloor;
         GameObject instanceWall, instanceOtherWall, instanceCloseDoor;
@@ -392,17 +393,25 @@ public class LevelManager : MonoBehaviour {
         for (int l = 0; l < roomSize + 1; l++)
         {
             toInstantiateTile.transform.localScale = new Vector3((float)tileSize / (float)planSize, toInstantiateTile.transform.localScale.y, (float)tileSize / (float)planSize);
-            GameObject instanceTile = Instantiate(toInstantiateTile, new Vector3(((nextLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize, 0f, ((rows - 1) * (roomSize + 1) + l) * tileSize), Quaternion.identity) as GameObject;
+            GameObject instanceTile = Instantiate(toInstantiateTile,
+                new Vector3(((nextLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize, 0f, ((rows - 1) * (roomSize + 1) + l) * tileSize),
+                Quaternion.identity) as GameObject;
             instanceTile.transform.SetParent(levelHolder);
 
-            GameObject instanceRoof = Instantiate(roof, new Vector3(((nextLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize, outsideWalls[0].transform.localScale.y, ((rows - 1) * (roomSize + 1) + l) * tileSize), Quaternion.identity) as GameObject;
+            GameObject instanceRoof = Instantiate(roof,
+                new Vector3(((nextLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize, outsideWalls[0].transform.localScale.y, ((rows - 1) * (roomSize + 1) + l) * tileSize),
+                Quaternion.identity) as GameObject;
             instanceRoof.transform.SetParent(levelHolder);
 
             outsideWalls[0].transform.localScale = new Vector3(outsideWalls[0].transform.localScale.x, outsideWalls[0].transform.localScale.y, tileSize);
-            instanceWall = Instantiate(outsideWalls[0], new Vector3(((nextLevelDoor + 0.5f) * roomSize - 1f) * tileSize, outsideWalls[0].transform.localScale.y / 2f, (rows * roomSize + l) * tileSize), Quaternion.identity) as GameObject;
+            instanceWall = Instantiate(outsideWalls[0],
+                new Vector3(((nextLevelDoor + 0.5f) * roomSize - 1f) * tileSize, outsideWalls[0].transform.localScale.y / 2f, (rows * roomSize + l) * tileSize),
+                Quaternion.identity) as GameObject;
             instanceWall.transform.SetParent(levelHolder);
 
-            instanceOtherWall = Instantiate(outsideWalls[0], new Vector3((nextLevelDoor + 0.5f) * roomSize * tileSize, outsideWalls[0].transform.localScale.y / 2f, (rows * roomSize + l) * tileSize), Quaternion.identity) as GameObject;
+            instanceOtherWall = Instantiate(outsideWalls[0],
+                new Vector3((nextLevelDoor + 0.5f) * roomSize * tileSize, outsideWalls[0].transform.localScale.y / 2f, (rows * roomSize + l) * tileSize),
+                Quaternion.identity) as GameObject;
             instanceOtherWall.transform.SetParent(levelHolder);
         }
 
@@ -410,50 +419,87 @@ public class LevelManager : MonoBehaviour {
         float epsilonDeepthDoor = 0.5f;
 
         outsideWalls[1].transform.localScale = new Vector3((tileSize * roomSize - sizeDoor) / 2f + epsilonSecuDoor, outsideWalls[1].transform.localScale.y, outsideWalls[1].transform.localScale.z);
-        instanceWall = Instantiate(outsideWalls[1], new Vector3(((nextLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize - (outsideWalls[1].transform.localScale.x - epsilonSecuDoor + sizeDoor) / 2f, outsideWalls[1].transform.localScale.y / 2f, ((rows + 1) * roomSize - 0.5f) * tileSize), Quaternion.identity) as GameObject;
+        instanceWall = Instantiate(outsideWalls[1],
+            new Vector3(((nextLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize - (outsideWalls[1].transform.localScale.x - epsilonSecuDoor + sizeDoor) / 2f, outsideWalls[1].transform.localScale.y / 2f, ((rows + 1) * roomSize - 0.5f) * tileSize),
+            Quaternion.identity) as GameObject;
         instanceWall.transform.SetParent(levelHolder);
 
         closeDoor.transform.localRotation = new Quaternion(0f, -90f, 0f, 0f);
-        instanceCloseDoor = Instantiate(closeDoor, new Vector3(((nextLevelDoor + 0.5f) * roomSize) * tileSize - sizeDoor / 2f, 0f, ((rows + 1) * roomSize - 0.5f) * tileSize - epsilonDeepthDoor), Quaternion.identity) as GameObject;
+        instanceCloseDoor = Instantiate(closeDoor,
+            new Vector3(((nextLevelDoor + 0.5f) * roomSize) * tileSize - sizeDoor / 2f, 0f, ((rows + 1) * roomSize - 0.5f) * tileSize - epsilonDeepthDoor),
+            Quaternion.identity) as GameObject;
         instanceCloseDoor.transform.SetParent(levelHolder);
 
         outsideWalls[1].transform.localScale = new Vector3((tileSize * roomSize - sizeDoor) / 2f + epsilonSecuDoor, outsideWalls[1].transform.localScale.y, outsideWalls[1].transform.localScale.z);
-        instanceOtherWall = Instantiate(outsideWalls[1], new Vector3(((nextLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize + (outsideWalls[1].transform.localScale.x - epsilonSecuDoor + sizeDoor) / 2f, outsideWalls[1].transform.localScale.y / 2f, ((rows + 1) * roomSize - 0.5f) * tileSize), Quaternion.identity) as GameObject;
+        instanceOtherWall = Instantiate(outsideWalls[1],
+            new Vector3(((nextLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize + (outsideWalls[1].transform.localScale.x - epsilonSecuDoor + sizeDoor) / 2f, outsideWalls[1].transform.localScale.y / 2f, ((rows + 1) * roomSize - 0.5f) * tileSize),
+            Quaternion.identity) as GameObject;
         instanceOtherWall.transform.SetParent(levelHolder);
+
+        restartLevel.transform.localScale = new Vector3(tileSize * roomSize, outsideWalls[1].transform.localScale.y, outsideWalls[1].transform.localScale.z);
+        GameObject instanceRestartLevel = Instantiate(restartLevel,
+            new Vector3(((nextLevelDoor + 0.5f) * roomSize) * tileSize - sizeDoor / 2f, restartLevel.transform.localScale.y / 2f, (rows * roomSize + 0.5f) * tileSize),
+            Quaternion.identity) as GameObject;
+        instanceRestartLevel.transform.SetParent(levelHolder);
 
         for (int l = 0; l < roomSize + 1; l++)
         {
             toInstantiateTile.transform.localScale = new Vector3((float)tileSize / (float)planSize, toInstantiateTile.transform.localScale.y, (float)tileSize / (float)planSize);
-            GameObject instanceTile = Instantiate(toInstantiateTile, new Vector3(((previousLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize, 0f, (-1 - l) * tileSize), Quaternion.identity) as GameObject;
+            GameObject instanceTile = Instantiate(toInstantiateTile,
+                new Vector3(((previousLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize, 0f, (-1 - l) * tileSize),
+                Quaternion.identity) as GameObject;
             instanceTile.transform.SetParent(levelHolder);
 
-            GameObject instanceRoof = Instantiate(roof, new Vector3(((previousLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize, outsideWalls[0].transform.localScale.y, (-1 - l) * tileSize), Quaternion.identity) as GameObject;
+            GameObject instanceRoof = Instantiate(roof,
+                new Vector3(((previousLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize, outsideWalls[0].transform.localScale.y, (-1 - l) * tileSize),
+                Quaternion.identity) as GameObject;
             instanceRoof.transform.SetParent(levelHolder);
 
             outsideWalls[0].transform.localScale = new Vector3(outsideWalls[0].transform.localScale.x, outsideWalls[0].transform.localScale.y, tileSize);
-            instanceWall = Instantiate(outsideWalls[0], new Vector3(((previousLevelDoor + 0.5f) * roomSize - 1f) * tileSize, outsideWalls[0].transform.localScale.y / 2f, (-1 - l) * tileSize), Quaternion.identity) as GameObject;
+            instanceWall = Instantiate(outsideWalls[0],
+                new Vector3(((previousLevelDoor + 0.5f) * roomSize - 1f) * tileSize, outsideWalls[0].transform.localScale.y / 2f, (-1 - l) * tileSize),
+                Quaternion.identity) as GameObject;
             instanceWall.transform.SetParent(levelHolder);
 
-            instanceOtherWall = Instantiate(outsideWalls[0], new Vector3((previousLevelDoor + 0.5f) * roomSize * tileSize, outsideWalls[0].transform.localScale.y / 2f, (-1 - l) * tileSize), Quaternion.identity) as GameObject;
+            instanceOtherWall = Instantiate(outsideWalls[0],
+                new Vector3((previousLevelDoor + 0.5f) * roomSize * tileSize, outsideWalls[0].transform.localScale.y / 2f, (-1 - l) * tileSize),
+                Quaternion.identity) as GameObject;
             instanceOtherWall.transform.SetParent(levelHolder);
         }
 
         outsideWalls[1].transform.localScale = new Vector3((tileSize * roomSize - sizeDoor) / 2f + epsilonSecuDoor, outsideWalls[1].transform.localScale.y, outsideWalls[1].transform.localScale.z);
-        instanceWall = Instantiate(outsideWalls[1], new Vector3(((previousLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize - (outsideWalls[1].transform.localScale.x - epsilonSecuDoor + sizeDoor) / 2f, outsideWalls[1].transform.localScale.y / 2f, (-roomSize - 0.5f) * tileSize), Quaternion.identity) as GameObject;
+        instanceWall = Instantiate(outsideWalls[1],
+            new Vector3(((previousLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize - (outsideWalls[1].transform.localScale.x - epsilonSecuDoor + sizeDoor) / 2f, outsideWalls[1].transform.localScale.y / 2f, (-roomSize - 0.5f) * tileSize),
+            Quaternion.identity) as GameObject;
         instanceWall.transform.SetParent(levelHolder);
 
         closeDoor.transform.localRotation = new Quaternion(0f, -90f, 0f, 0f);
-        instanceCloseDoor = Instantiate(closeDoor, new Vector3(((previousLevelDoor + 0.5f) * roomSize) * tileSize - sizeDoor / 2f, 0f, (-roomSize - 0.5f) * tileSize - epsilonDeepthDoor), Quaternion.identity) as GameObject;
+        instanceCloseDoor = Instantiate(closeDoor,
+            new Vector3(((previousLevelDoor + 0.5f) * roomSize) * tileSize - sizeDoor / 2f, 0f, (-roomSize - 0.5f) * tileSize - epsilonDeepthDoor),
+            Quaternion.identity) as GameObject;
         instanceCloseDoor.transform.SetParent(levelHolder);
 
         outsideWalls[1].transform.localScale = new Vector3((tileSize * roomSize - sizeDoor) / 2f + epsilonSecuDoor, outsideWalls[1].transform.localScale.y, outsideWalls[1].transform.localScale.z);
-        instanceOtherWall = Instantiate(outsideWalls[1], new Vector3(((previousLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize + (outsideWalls[1].transform.localScale.x - epsilonSecuDoor + sizeDoor) / 2f, outsideWalls[1].transform.localScale.y / 2f, (-roomSize - 0.5f) * tileSize), Quaternion.identity) as GameObject;
+        instanceOtherWall = Instantiate(outsideWalls[1],
+            new Vector3(((previousLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize + (outsideWalls[1].transform.localScale.x - epsilonSecuDoor + sizeDoor) / 2f, outsideWalls[1].transform.localScale.y / 2f, (-roomSize - 0.5f) * tileSize),
+            Quaternion.identity) as GameObject;
         instanceOtherWall.transform.SetParent(levelHolder);
+
+        GameObject player = GameObject.Find("Player");
+        GameObject camera = GameObject.Find("Main Camera");
+        float deltaCameraY = -player.transform.localPosition.z;
+
+        player.transform.localPosition = new Vector3(((previousLevelDoor + 0.5f) * roomSize) * tileSize - sizeDoor / 2f + oldPlayerPosX, player.transform.localPosition.y, (-roomSize + 0.5f) * tileSize);
+
+        //MODIFICATIONS A PREVOIR POUR LE CHANGEMENT DE CAMERA EN VUE FPS
+        float deltaCameraX = player.transform.localPosition.x;
+        deltaCameraY += player.transform.localPosition.z;
+        camera.transform.localPosition = new Vector3(deltaCameraX, camera.transform.localPosition.y, camera.transform.localPosition.z + deltaCameraY);
     }
 
 
     public void LevelSetup(int levelNumLevel, int levelColums, int levelRows, int levelNbWalls, int levelNbTypeTiles, int levelMaxNbTilesByRoom, int levelTileSize,
-        int levelRoomSize, int levelNbGoals, int levelNbLamps, int levelNbBarricades)
+        int levelRoomSize, int levelNbGoals, int levelNbLamps, int levelNbBarricades, float levelOldPlayerPosX)
     {
         numLevel = levelNumLevel;
         columns = levelColums;
@@ -496,9 +542,16 @@ public class LevelManager : MonoBehaviour {
         OneWall();
         BarricadeSetup();
         LampSetup();
-        TransitionLevelSetup(nextLevelDoor, previousLevelDoor);
+        TransitionLevelSetup(nextLevelDoor, previousLevelDoor, levelOldPlayerPosX);
 
         Debug.Log("Horizontal avant : " + debug + ", après : " + insideHorizontalWallList.Count + " test " + removeHorizontalWallList.Count);
         Debug.Log("Vertical avant : " + debug2 + ", après : " + insideVerticalWallList.Count + " test " + removeVerticalWallList.Count);
+    }
+
+
+    public void DestroyLevel(int levelNumLevel)
+    {
+        Destroy(GameObject.Find("Level"));
+        Destroy(GameObject.Find("Goals"));
     }
 }
