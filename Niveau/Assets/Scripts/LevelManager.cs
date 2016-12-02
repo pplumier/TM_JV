@@ -32,7 +32,7 @@ public class LevelManager : MonoBehaviour {
     private Transform goalHolder;
     private GameObject[,] floorTiles;
     private int[] sizeFloorRoomTiles;
-    private NavMeshPath path;
+    private UnityEngine.AI.NavMeshPath path;
     private List<GameObject> insideHorizontalWallList;
     private List<GameObject> insideVerticalWallList;
     private List<GameObject> removeHorizontalWallList;
@@ -197,7 +197,7 @@ public class LevelManager : MonoBehaviour {
     void GoalSetup()
     {
         //NavMeshBuilder.BuildNavMesh();
-        path = new NavMeshPath();
+        path = new UnityEngine.AI.NavMeshPath();
 
         for (int k = 0; k < nbGoals; k++)
         {
@@ -212,7 +212,7 @@ public class LevelManager : MonoBehaviour {
 
             //Debug.Log(posX * tileSize + " || " + posY * tileSize + " || " + NavMesh.CalculatePath(new Vector3(0f, 0f, 0f), new Vector3(posX * tileSize, 0f, posY * tileSize), NavMesh.GetAreaFromName("walkable"), path) + " || " + NavMesh.CalculatePath(new Vector3(0f, 0f, 0f), new Vector3(posX * tileSize, 0f, posY * tileSize), NavMesh.AllAreas, path));
 
-            if (NavMesh.CalculatePath(new Vector3(0f, 0f, 0f), new Vector3(posX * tileSize, 0f, posY * tileSize), NavMesh.GetAreaFromName("walkable"), path))//NavMesh.AllAreas
+            if (UnityEngine.AI.NavMesh.CalculatePath(new Vector3(0f, 0f, 0f), new Vector3(posX * tileSize, 0f, posY * tileSize), UnityEngine.AI.NavMesh.GetAreaFromName("walkable"), path))//NavMesh.AllAreas
             {
                 GameObject instanceGoal = Instantiate(goal, new Vector3(posX * tileSize, goal.transform.localScale.y * 3f / 4f, posY * tileSize), Quaternion.identity) as GameObject;
                 instanceGoal.transform.SetParent(levelHolder);
