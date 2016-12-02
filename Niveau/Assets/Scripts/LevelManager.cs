@@ -196,7 +196,7 @@ public class LevelManager : MonoBehaviour {
 
     void GoalSetup()
     {
-        NavMeshBuilder.BuildNavMesh();
+        //NavMeshBuilder.BuildNavMesh();
         path = new NavMeshPath();
 
         for (int k = 0; k < nbGoals; k++)
@@ -538,7 +538,7 @@ public class LevelManager : MonoBehaviour {
 
         FloorSetup(nextLevelDoor, previousLevelDoor);
         InsideWallSetup();
-        //GoalSetup();
+        GoalSetup();
         OneWall();
         BarricadeSetup();
         LampSetup();
