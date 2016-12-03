@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance = null;
     public LevelManager levelScript;
 
-    private int nbLevel = 2;
+    private int nbLevel = 3;
     private int[] tabLevelColums;
     private int[] tabLevelRows;
     private int[] tabLevelNbWalls;
@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
     private int[] tabLevelNbLamps;
     private int[] tabLevelNbBarricades;
     private int currentLevel = 0;
-    private Text finishText;
+    private Text finishText; 
 
     void Awake()
     {
@@ -64,16 +64,27 @@ public class GameManager : MonoBehaviour {
         tabLevelNbLamps[0] = 20;
         tabLevelNbBarricades[0] = 50;
 
-        tabLevelColums[1] = 5;
-        tabLevelRows[1] = 5;
-        tabLevelNbWalls[1] = 400;
+        tabLevelColums[1] = 10;
+        tabLevelRows[1] = 10;
+        tabLevelNbWalls[1] = 1000;
         tabLevelNbTypeTiles[1] = 6;
         tabLevelMaxNbTilesByRoom[1] = 3;
         tabLevelTileSize[1] = 10;
-        tabLevelRoomSize[1] = 4;
+        tabLevelRoomSize[1] = 2;
         tabLevelNbGoals[1] = 20;
-        tabLevelNbLamps[1] = 20;
-        tabLevelNbBarricades[1] = 50;
+        tabLevelNbLamps[1] = 40;
+        tabLevelNbBarricades[1] = 20;
+
+        tabLevelColums[2] = 10;
+        tabLevelRows[2] = 10;
+        tabLevelNbWalls[2] = 1000;
+        tabLevelNbTypeTiles[2] = 6;
+        tabLevelMaxNbTilesByRoom[2] = 3;
+        tabLevelTileSize[2] = 10;
+        tabLevelRoomSize[2] = 3;
+        tabLevelNbGoals[2] = 20;
+        tabLevelNbLamps[2] = 50;
+        tabLevelNbBarricades[2] = 75;
 
         levelScript.LevelSetup(0, tabLevelColums[0], tabLevelRows[0], tabLevelNbWalls[0], tabLevelNbTypeTiles[0], tabLevelMaxNbTilesByRoom[0],
             tabLevelTileSize[0], tabLevelRoomSize[0], tabLevelNbGoals[0], tabLevelNbLamps[0], tabLevelNbBarricades[0], 0f);
@@ -85,7 +96,8 @@ public class GameManager : MonoBehaviour {
         {
             GameObject player = GameObject.Find("Player");
             float oldPlayerPosX = (player.transform.localPosition.x % tabLevelTileSize[currentLevel]) - 0.5f * tabLevelTileSize[currentLevel];
-            player.transform.localPosition = new Vector3(0f, player.transform.localPosition.y, 0f);
+            // Il faut changer la position du joueur avant de générer à nouveau le niveau pour qu'il ne déclenche pas le trigger généré pour le nouveau niveau 
+            player.transform.localPosition = new Vector3(-50f, player.transform.localPosition.y, -50f);
 
             levelScript.DestroyLevel(currentLevel);
             ++currentLevel;
