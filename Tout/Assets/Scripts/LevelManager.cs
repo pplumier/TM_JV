@@ -487,8 +487,8 @@ public class LevelManager : MonoBehaviour {
             Quaternion.identity) as GameObject;
         instanceOtherWall.transform.SetParent(levelHolder);
 
-        GameObject player = GameObject.Find("Player");
-        GameObject camera = GameObject.Find("Main Camera");
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        //GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");//Find("Main Camera");
         float deltaCameraY = -player.transform.localPosition.z;
 
         float newPlayerPosX = ((previousLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize + oldPlayerPosX;
@@ -497,7 +497,7 @@ public class LevelManager : MonoBehaviour {
         //MODIFICATIONS A PREVOIR POUR LE CHANGEMENT DE CAMERA EN VUE FPS
         float deltaCameraX = player.transform.localPosition.x;
         deltaCameraY += player.transform.localPosition.z;
-        camera.transform.localPosition = new Vector3(deltaCameraX, camera.transform.localPosition.y, camera.transform.localPosition.z + deltaCameraY);
+        //camera.transform.localPosition = new Vector3(deltaCameraX, camera.transform.localPosition.y, camera.transform.localPosition.z + deltaCameraY);
     }
 
 
