@@ -95,7 +95,9 @@ public class LevelManager : MonoBehaviour {
         {
             for (int y = 0; y < rows; y++)
             {
-                GameObject instanceRoof = Instantiate(roof, new Vector3(((x + 0.5f) * roomSize - 0.5f) * tileSize, outsideWalls[0].transform.localScale.y, ((y + 0.5f) * roomSize - 0.5f) * tileSize), Quaternion.identity) as GameObject;
+                GameObject toInstantiateRoof = roof;
+                toInstantiateRoof.transform.localScale = new Vector3((float)roomSize * (float)tileSize / (float)planSize, toInstantiateRoof.transform.localScale.y, (float)roomSize * (float)tileSize / (float)planSize);
+                GameObject instanceRoof = Instantiate(toInstantiateRoof, new Vector3(((x + 0.5f) * roomSize - 0.5f) * tileSize, outsideWalls[0].transform.localScale.y, ((y + 0.5f) * roomSize - 0.5f) * tileSize), Quaternion.identity) as GameObject;
                 instanceRoof.transform.SetParent(levelHolder);
 
                 int Room = Random.Range(0, nbTypeTiles);
@@ -257,7 +259,6 @@ public class LevelManager : MonoBehaviour {
 
                                     float posMin = (posY < otherPosY) ? posY : otherPosY;
                                     float scaleMin = (posY < otherPosY) ? scaleY : otherScaleY;
-                                    float scaleMax = (posY < otherPosY) ? otherScaleY : scaleY;
 
                                     scaleY = (scaleY + otherScaleY) / 2f + Mathf.Abs(posY - otherPosY);
                                     posY = posMin + (scaleY - scaleMin) / 2f;
@@ -317,7 +318,6 @@ public class LevelManager : MonoBehaviour {
 
                                     float posMin = (posX < otherPosX) ? posX : otherPosX;
                                     float scaleMin = (posX < otherPosX) ? scaleX : otherscaleX;
-                                    float scaleMax = (posX < otherPosX) ? otherscaleX : scaleX;
 
                                     scaleX = (scaleX + otherscaleX) / 2f + Mathf.Abs(posX - otherPosX);
                                     posX = posMin + (scaleX - scaleMin) / 2f;
@@ -388,6 +388,7 @@ public class LevelManager : MonoBehaviour {
     void TransitionLevelSetup(int nextLevelDoor, int previousLevelDoor, float oldPlayerPosX)
     {
         GameObject toInstantiateTile = transitionLevelFloor;
+        GameObject toInstantiateRoof = roof;
         GameObject instanceWall, instanceOtherWall, instanceCloseDoor;
 
         // génération de la transition pour le prochain level
@@ -399,7 +400,8 @@ public class LevelManager : MonoBehaviour {
                 Quaternion.identity) as GameObject;
             instanceTile.transform.SetParent(levelHolder);
 
-            GameObject instanceRoof = Instantiate(roof,
+            toInstantiateRoof.transform.localScale = new Vector3((float)tileSize / (float)planSize, toInstantiateRoof.transform.localScale.y, (float)tileSize / (float)planSize);
+            GameObject instanceRoof = Instantiate(toInstantiateRoof,
                 new Vector3(((nextLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize, outsideWalls[0].transform.localScale.y, (rows * roomSize + l) * tileSize),
                 Quaternion.identity) as GameObject;
             instanceRoof.transform.SetParent(levelHolder);
@@ -452,7 +454,8 @@ public class LevelManager : MonoBehaviour {
                 Quaternion.identity) as GameObject;
             instanceTile.transform.SetParent(levelHolder);
 
-            GameObject instanceRoof = Instantiate(roof,
+            toInstantiateRoof.transform.localScale = new Vector3((float)tileSize / (float)planSize, toInstantiateRoof.transform.localScale.y, (float)tileSize / (float)planSize);
+            GameObject instanceRoof = Instantiate(toInstantiateRoof,
                 new Vector3(((previousLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize, outsideWalls[0].transform.localScale.y, (-1 - l) * tileSize),
                 Quaternion.identity) as GameObject;
             instanceRoof.transform.SetParent(levelHolder);
@@ -488,16 +491,16 @@ public class LevelManager : MonoBehaviour {
         instanceOtherWall.transform.SetParent(levelHolder);
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        //GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");//Find("Main Camera");
-        float deltaCameraY = -player.transform.localPosition.z;
+        /*GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");//Find("Main Camera");
+        float deltaCameraY = -player.transform.localPosition.z;*/
 
         float newPlayerPosX = ((previousLevelDoor + 0.5f) * roomSize - 0.5f) * tileSize + oldPlayerPosX;
         player.transform.localPosition = new Vector3(newPlayerPosX, player.transform.localPosition.y, (-transitionSize + 0.5f) * tileSize);
 
         //MODIFICATIONS A PREVOIR POUR LE CHANGEMENT DE CAMERA EN VUE FPS
-        float deltaCameraX = player.transform.localPosition.x;
+        /*float deltaCameraX = player.transform.localPosition.x;
         deltaCameraY += player.transform.localPosition.z;
-        //camera.transform.localPosition = new Vector3(deltaCameraX, camera.transform.localPosition.y, camera.transform.localPosition.z + deltaCameraY);
+        camera.transform.localPosition = new Vector3(deltaCameraX, camera.transform.localPosition.y, camera.transform.localPosition.z + deltaCameraY);*/
     }
 
 
