@@ -359,7 +359,9 @@ public class LevelManager : MonoBehaviour {
             barricadePositionList[posX, posY] = false;
 
             int numBarricade = Random.Range(0, AllBarricades.Length);
-            GameObject instanceBarricade = Instantiate(AllBarricades[numBarricade], new Vector3(posX * tileSize, AllBarricades[numBarricade].transform.localScale.y / 2f, posY * tileSize), Quaternion.identity) as GameObject;
+            GameObject instanceBarricade = Instantiate(AllBarricades[numBarricade],
+                new Vector3(posX * tileSize, AllBarricades[numBarricade].transform.localScale.y / 2f + 0.1f, posY * tileSize), // + 0.1f pour s'assurer que la barricade ne soit pas bloquée dans le sol, la gravité la fera retomber au sol
+                Quaternion.identity) as GameObject;
             instanceBarricade.transform.SetParent(levelHolder);
         }
     }
