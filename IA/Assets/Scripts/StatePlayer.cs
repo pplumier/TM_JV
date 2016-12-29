@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class StatePlayer : MonoBehaviour {
 
-	// Is a IA 3 currently on the play
+	// Is a IA 3 currently on the player
 	private bool isAttacked;
+	
 	// Use this for initialization
 	void Start () {
 		isAttacked = false;
@@ -22,5 +23,6 @@ public class StatePlayer : MonoBehaviour {
 	
 	public void SetIsAttacked(bool value) {
 		isAttacked = value;
+		Debug.Log(isAttacked);
 	}
 }

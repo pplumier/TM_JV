@@ -11,13 +11,13 @@ public class IA3Behaviour : MonoBehaviour {
 	private Rigidbody r;
 	private bool onCeiling;
 	private bool onPlayer;
+	private bool done; // has already jumped on the player
 	private float distToGround;
 	
 	// Rotation
 	private float x, y, z;
 	private float sumRotation;
-	
-	public float moveLimit; // Amount of mouse movement needed to eject the IA from the player
+	public float moveLimit = 2; // Amount of mouse movement needed to eject the IA from the player
 	
 	// Escape
 	public Transform escapePosition;
@@ -29,6 +29,7 @@ public class IA3Behaviour : MonoBehaviour {
 		maxDistance = 5f;
 		onCeiling = true;
 		onPlayer = false;
+		done = false;
 		r = GetComponent<Rigidbody>();
 		distToGround = GetComponent<Collider>().bounds.extents.y;
 		sumRotation = 0;
@@ -60,10 +61,12 @@ public class IA3Behaviour : MonoBehaviour {
 		// If the AI is falling, or on the player
 		else if (!IsGrounded()) {
 			if (onPlayer) {
+				Debug.Log("OnPLAYER");
 				transform.position = Camera.main.transform.position + Camera.main.transform.forward * 1;
 				transform.rotation = Camera.main.transform.rotation;
 				
 				if (sumRotation < moveLimit) {
+					Debug.Log("Move needed");
 					sumRotation += Mathf.Abs(transform.rotation.x - x);
 					sumRotation += Mathf.Abs(transform.rotation.y - y);
 					sumRotation += Mathf.Abs(transform.rotation.z - z);
@@ -73,6 +76,7 @@ public class IA3Behaviour : MonoBehaviour {
 					z = transform.rotation.z;
 				}
 				else {
+					Debug.Log("Enough movement");
 					r.useGravity = true;
 					r.freezeRotation = false;
 					onPlayer = false;
@@ -107,9 +111,11 @@ public class IA3Behaviour : MonoBehaviour {
 	
 	void OnCollisionEnter(Collision col) 
 	{
-		if (col.gameObject.CompareTag("Player")) 
+		if (!done && col.gameObject.CompareTag("Player")) 
 		{
+			Debug.Log("Hit PLayer");
 			onPlayer = true;
+			done = true;
 			player.GetComponent<StatePlayer>().SetIsAttacked(true);
 			r.velocity = Vector3.zero;
 			r.useGravity = false;
@@ -119,6 +125,9 @@ public class IA3Behaviour : MonoBehaviour {
 			x = transform.rotation.x;
 			y = transform.rotation.y;
 			z = transform.rotation.z;
+			
+			transform.position = Camera.main.transform.position + Camera.main.transform.forward * 1;
+			transform.rotation = Camera.main.transform.rotation;
 		}
     }
 	
