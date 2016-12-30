@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour {
         tabLevelRows[0] = 5;
         tabLevelNbWalls[0] = 700;
         tabLevelNbTypeTiles[0] = 6;
-        tabLevelMaxNbTilesByRoom[0] = 6;
+        tabLevelMaxNbTilesByRoom[0] = 9;
         tabLevelTileSize[0] = 10;
         tabLevelRoomSize[0] = 4;
         tabLevelNbGoals[0] = 20;
@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour {
         tabLevelRows[1] = 10;
         tabLevelNbWalls[1] = 500;
         tabLevelNbTypeTiles[1] = 6;
-        tabLevelMaxNbTilesByRoom[1] = 6;
+        tabLevelMaxNbTilesByRoom[1] = 9;
         tabLevelTileSize[1] = 10;
         tabLevelRoomSize[1] = 2;
         tabLevelNbGoals[1] = 2;
@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour {
         tabLevelRows[2] = 10;
         tabLevelNbWalls[2] = 1000;
         tabLevelNbTypeTiles[2] = 6;
-        tabLevelMaxNbTilesByRoom[2] = 6;
+        tabLevelMaxNbTilesByRoom[2] = 9;
         tabLevelTileSize[2] = 10;
         tabLevelRoomSize[2] = 2;
         tabLevelNbGoals[2] = 20;
@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour {
         tabLevelRows[3] = 5;
         tabLevelNbWalls[3] = 300;
         tabLevelNbTypeTiles[3] = 6;
-        tabLevelMaxNbTilesByRoom[3] = 6;
+        tabLevelMaxNbTilesByRoom[3] = 9;
         tabLevelTileSize[3] = 10;
         tabLevelRoomSize[3] = 3;
         tabLevelNbGoals[3] = 2;
