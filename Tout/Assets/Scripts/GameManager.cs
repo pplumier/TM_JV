@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance = null;
     public LevelManager levelScript;
 
-    private int nbLevel = 3;
+    private int nbLevel = 5;
     private int[] tabLevelColums;
     private int[] tabLevelRows;
     private int[] tabLevelNbWalls;
@@ -64,27 +64,49 @@ public class GameManager : MonoBehaviour {
         tabLevelNbLamps[0] = 20;
         tabLevelNbBarricades[0] = 50;
 
-        tabLevelColums[1] = 10;
+        tabLevelColums[1] = 3;
         tabLevelRows[1] = 10;
-        tabLevelNbWalls[1] = 1000;
+        tabLevelNbWalls[1] = 500;
         tabLevelNbTypeTiles[1] = 6;
         tabLevelMaxNbTilesByRoom[1] = 6;
         tabLevelTileSize[1] = 10;
         tabLevelRoomSize[1] = 2;
-        tabLevelNbGoals[1] = 20;
-        tabLevelNbLamps[1] = 40;
+        tabLevelNbGoals[1] = 2;
+        tabLevelNbLamps[1] = 4;
         tabLevelNbBarricades[1] = 20;
 
         tabLevelColums[2] = 10;
         tabLevelRows[2] = 10;
-        tabLevelNbWalls[2] = 1400;
+        tabLevelNbWalls[2] = 1000;
         tabLevelNbTypeTiles[2] = 6;
         tabLevelMaxNbTilesByRoom[2] = 6;
         tabLevelTileSize[2] = 10;
-        tabLevelRoomSize[2] = 3;
+        tabLevelRoomSize[2] = 2;
         tabLevelNbGoals[2] = 20;
-        tabLevelNbLamps[2] = 50;
-        tabLevelNbBarricades[2] = 75;
+        tabLevelNbLamps[2] = 40;
+        tabLevelNbBarricades[2] = 20;
+
+        tabLevelColums[3] = 2;
+        tabLevelRows[3] = 5;
+        tabLevelNbWalls[3] = 300;
+        tabLevelNbTypeTiles[3] = 6;
+        tabLevelMaxNbTilesByRoom[3] = 6;
+        tabLevelTileSize[3] = 10;
+        tabLevelRoomSize[3] = 3;
+        tabLevelNbGoals[3] = 2;
+        tabLevelNbLamps[3] = 4;
+        tabLevelNbBarricades[3] = 75;
+
+        tabLevelColums[4] = 10;
+        tabLevelRows[4] = 10;
+        tabLevelNbWalls[4] = 1400;
+        tabLevelNbTypeTiles[4] = 6;
+        tabLevelMaxNbTilesByRoom[4] = 6;
+        tabLevelTileSize[4] = 10;
+        tabLevelRoomSize[4] = 3;
+        tabLevelNbGoals[4] = 20;
+        tabLevelNbLamps[4] = 50;
+        tabLevelNbBarricades[4] = 75;
 
         levelScript.LevelSetup(0, tabLevelColums[0], tabLevelRows[0], tabLevelNbWalls[0], tabLevelNbTypeTiles[0], tabLevelMaxNbTilesByRoom[0],
             tabLevelTileSize[0], tabLevelRoomSize[0], tabLevelNbGoals[0], tabLevelNbLamps[0], tabLevelNbBarricades[0], 0f);
