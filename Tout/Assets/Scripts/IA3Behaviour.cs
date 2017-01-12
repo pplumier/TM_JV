@@ -2,9 +2,7 @@
 using System.Collections;
 
 public class IA3Behaviour : MonoBehaviour {
-	public GameObject player;
-	
-	//public Transform escapePoint;
+	private GameObject player;
 	
 	public float maxDistance = 3; // Distance max from where the IA jumps on the player
 	
@@ -13,6 +11,8 @@ public class IA3Behaviour : MonoBehaviour {
 	private bool onPlayer;
 	private bool done; // has already jumped on the player
 	private float distToGround;
+	
+	private bool isAgentActive;
 	
 	// Rotation
 	private float x, y, z;
@@ -26,14 +26,18 @@ public class IA3Behaviour : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+		player = GameObject.FindGameObjectWithTag("Player");
 		maxDistance = 5f;
 		onCeiling = true;
 		onPlayer = false;
+		isAgentActive = false;
 		done = false;
 		r = GetComponent<Rigidbody>();
 		distToGround = GetComponent<Collider>().bounds.extents.y;
+
 		sumRotation = 0;
-		agent = null;
+		//agent = null;
+		agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
 	}
 	
 	// Update is called once per frame
@@ -61,12 +65,12 @@ public class IA3Behaviour : MonoBehaviour {
 		// If the AI is falling, or on the player
 		else if (!IsGrounded()) {
 			if (onPlayer) {
-				Debug.Log("OnPLAYER");
+				//Debug.Log("OnPLAYER");
 				transform.position = Camera.main.transform.position + Camera.main.transform.forward * 1;
 				transform.rotation = Camera.main.transform.rotation;
 				
 				if (sumRotation < moveLimit) {
-					Debug.Log("Move needed");
+					//Debug.Log("Move needed");
 					sumRotation += Mathf.Abs(transform.rotation.x - x);
 					sumRotation += Mathf.Abs(transform.rotation.y - y);
 					sumRotation += Mathf.Abs(transform.rotation.z - z);
@@ -76,7 +80,7 @@ public class IA3Behaviour : MonoBehaviour {
 					z = transform.rotation.z;
 				}
 				else {
-					Debug.Log("Enough movement");
+					//Debug.Log("Enough movement");
 					r.useGravity = true;
 					r.freezeRotation = false;
 					onPlayer = false;
@@ -86,7 +90,8 @@ public class IA3Behaviour : MonoBehaviour {
 		}
 		// If the AI is on the ground
 		else {
-			if (agent == null) {
+			if (!isAgentActive) {
+				isAgentActive = true;
 				agent = UnityEngineInternal.APIUpdaterRuntimeServices.AddComponent( gameObject, "Assets/Scripts/IABehaviour.cs (30,9)", "NavMeshAgent" ) as UnityEngine.AI.NavMeshAgent;
 				agent.speed = 20;
 			}
@@ -113,7 +118,7 @@ public class IA3Behaviour : MonoBehaviour {
 	{
 		if (!done && col.gameObject.CompareTag("Player")) 
 		{
-			Debug.Log("Hit PLayer");
+			//Debug.Log("Hit Player");
 			onPlayer = true;
 			done = true;
 			player.GetComponent<StatePlayer>().SetIsAttacked(true);

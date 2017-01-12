@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StatePlayer : MonoBehaviour {
 
-	// Is a IA 3 currently on the player?
+	// Is a IA 3 currently on the player
 	private bool isAttacked;
 	
 	// Use this for initialization
@@ -14,7 +14,7 @@ public class StatePlayer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Debug.Log(isAttacked);
+		
 	}
 	
 	public bool IsAttacked() {
