@@ -8,6 +8,11 @@ public class IA2Behavior : MonoBehaviour {
 	private bool isAttacking;
 	private bool isRunningAway;
 	
+	public float timeBeforeSearching = 10f;
+	private float time;
+	
+	private int walkRadius = 10;
+	
 	public GameObject player;
 	public Transform escapePoint;
 	private UnityEngine.AI.NavMeshAgent agent;
@@ -17,6 +22,7 @@ public class IA2Behavior : MonoBehaviour {
 		isSearching = true;
 		isAttacking = false;
 		isRunningAway = false;
+		time = timeBeforeSearching;
 	}
 	
 	// Update is called once per frame
@@ -27,17 +33,26 @@ public class IA2Behavior : MonoBehaviour {
 			RaycastHit hit;	
 			Physics.Raycast(transform.position, direction, out hit, Vector3.Distance(transform.position, player.transform.position));
 			
-			if (hit.collider != null && hit.collider.CompareTag("Player")) {
+			// If it sees the player
+			if (hit.collider != null && hit.collider.CompareTag("Player") && Vector3.Dot(transform.forward, (player.transform.position - transform.position)) > 0) {
 				isSearching = false;
 				isAttacking = true;
 			}
 			else {
-				// Moving randomly
+				// Moves randomly
+				Vector3 randomDirection = Random.insideUnitSphere * walkRadius;
+				 
+				randomDirection += transform.position;
+				UnityEngine.AI.NavMeshHit nmHit;
+				UnityEngine.AI.NavMesh.SamplePosition(randomDirection, out nmHit, walkRadius, 1);
+				
+				agent.SetDestination(nmHit.position);
+				
 			}
 		}
 		else if (isAttacking) {
 			// If the light isn't on him
-			agent.SetDestination(player.transform.position);
+				agent.SetDestination(player.transform.position);
 			// Else
 			// isAttacking = false;
 			// isRunningAway = true;
@@ -47,6 +62,13 @@ public class IA2Behavior : MonoBehaviour {
 		}
 		else {
 			// Waiting x seconds before searching again
+			if (time > 0)
+				time -= Time.deltaTime;
+			else {
+				isRunningAway = false;
+				isSearching = true;
+				time = timeBeforeSearching;
+			}
 		}
 	}
 }
