@@ -522,6 +522,7 @@ public class LevelManager : MonoBehaviour {
         nbBarricades = levelNbBarricades;
 
         levelHolder = new GameObject("Level").transform;
+        levelHolder.tag = "Level";
         goalHolder = new GameObject("Goals").transform;
         goalHolder.transform.SetParent(GameObject.Find("Canvas").transform);
         goalHolder.transform.localPosition = new Vector3(0f, 0f, 0f);
