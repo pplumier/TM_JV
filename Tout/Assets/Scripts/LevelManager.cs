@@ -27,6 +27,7 @@ public class LevelManager : MonoBehaviour {
     public GameObject[] outsideWalls;
     public GameObject goal;
     public GameObject[] AllBarricades;
+	public GameObject IAfleePosition;
 
     private Transform levelHolder;
     private Transform goalHolder;
@@ -387,6 +388,22 @@ public class LevelManager : MonoBehaviour {
     }
 
 
+	void IAfleePositionSetup()
+	{
+		GameObject instanceIAfleePosition = Instantiate(IAfleePosition, new Vector3(0f, 0f, 0f), Quaternion.identity) as GameObject;
+		instanceIAfleePosition.transform.SetParent(levelHolder);
+
+		GameObject instanceIAfleePosition1 = Instantiate(IAfleePosition, new Vector3(0f, 0f, (rows * roomSize - 1) * tileSize), Quaternion.identity) as GameObject;
+		instanceIAfleePosition1.transform.SetParent(levelHolder);
+
+		GameObject instanceIAfleePosition2 = Instantiate(IAfleePosition, new Vector3((columns * roomSize - 1) * tileSize, 0f, 0f), Quaternion.identity) as GameObject;
+		instanceIAfleePosition2.transform.SetParent(levelHolder);
+
+		GameObject instanceIAfleePosition3 = Instantiate(IAfleePosition, new Vector3((columns * roomSize - 1) * tileSize, 0f, (rows * roomSize - 1) * tileSize), Quaternion.identity) as GameObject;
+		instanceIAfleePosition3.transform.SetParent(levelHolder);
+	}
+
+
     void TransitionLevelSetup(int nextLevelDoor, int previousLevelDoor, float oldPlayerPosX)
     {
         GameObject toInstantiateTile = transitionLevelFloor;
@@ -550,6 +567,7 @@ public class LevelManager : MonoBehaviour {
         GoalSetup();
         BarricadeSetup();
         LampSetup();
+		IAfleePositionSetup ();
         TransitionLevelSetup(nextLevelDoor, previousLevelDoor, levelOldPlayerPosX);
 
         Debug.Log("Horizontal avant : " + debug + ", après : " + insideHorizontalWallList.Count + " test " + removeHorizontalWallList.Count);
