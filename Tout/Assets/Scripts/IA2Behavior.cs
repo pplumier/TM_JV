@@ -13,9 +13,15 @@ public class IA2Behavior : MonoBehaviour {
 	
 	private int walkRadius = 10;
 	
+	private GameObject plight;
+	private List<Vector3> lightIntersection;
+	
 	public GameObject player;
-	public Transform escapePoint;
 	private UnityEngine.AI.NavMeshAgent agent;
+	
+	public GameObject[] escapePoints;
+	public Transform target;
+	
 	// Use this for initialization
 	void Start () {
 		agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -24,6 +30,12 @@ public class IA2Behavior : MonoBehaviour {
 		isRunningAway = false;
 		time = timeBeforeSearching;
 		player = GameObject.FindGameObjectWithTag("Player");
+		
+		plight = GameObject.FindGameObjectWithTag("PlayerLight");
+		lightIntersection = plight.GetComponent<RayCast>().lightIntersection;
+		
+		escapePoints = GameObject.FindGameObjectsWithTag("FleePosition");
+		target = null;
 	}
 	
 	// Update is called once per frame
@@ -52,14 +64,32 @@ public class IA2Behavior : MonoBehaviour {
 			}
 		}
 		else if (isAttacking) {
-			// If the light isn't on him
-				agent.SetDestination(player.transform.position);
+			// If the light is on him
+			int l = lightIntersection.Count;
+			if (l > 0 && Vector3.Distance(lightIntersection[lightIntersection.Count/2], transform.position) < 8) {
+				isAttacking = false;
+				isRunningAway = true;
+			}
 			// Else
-			// isAttacking = false;
-			// isRunningAway = true;
+			else {
+				agent.SetDestination(player.transform.position);
+			}
 		}
 		else if (isRunningAway) {
-			agent.SetDestination(escapePoint.position);
+			if (target != null) {
+				agent.SetDestination(target.position);
+			}
+			else {
+				// Flee to the furthest escape point	
+				target = escapePoints[0].transform;
+				if (Vector3.Distance(target.position, transform.position) > Vector3.Distance(escapePoints[1].transform.position, transform.position))
+					target = escapePoints[1].transform;
+				if (Vector3.Distance(target.position, transform.position) > Vector3.Distance(escapePoints[2].transform.position, transform.position))
+					target = escapePoints[2].transform;
+				if (Vector3.Distance(target.position, transform.position) > Vector3.Distance(escapePoints[3].transform.position, transform.position))
+					target = escapePoints[3].transform;
+				agent.SetDestination(target.position);		
+			}	
 		}
 		else {
 			// Waiting x seconds before searching again
