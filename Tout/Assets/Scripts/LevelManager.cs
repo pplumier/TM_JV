@@ -28,6 +28,9 @@ public class LevelManager : MonoBehaviour {
     public GameObject goal;
     public GameObject[] AllBarricades;
 	public GameObject IAfleePosition;
+	public GameObject IA1;
+	public GameObject IA2;
+	public GameObject IA3;
 
     private Transform levelHolder;
     private Transform goalHolder;
@@ -59,6 +62,10 @@ public class LevelManager : MonoBehaviour {
     private int nbGoals = 20;
     private int nbLamps = 20;
     private int nbBarricades = 50;
+	
+	private int nbIA1 = 0;
+	private int nbIA2 = 5;
+	private int nbIA3 = 5;
 
     void InitialiseFloorTiles(GameObject[] floorRoomTiles, int number)
     {
@@ -404,6 +411,42 @@ public class LevelManager : MonoBehaviour {
 	}
 
 
+	void MonsterSetup()
+	{
+		// Creates IA 2
+		for (int k = 0; k < nbIA2; k++)
+		{
+			int posX = Random.Range(0, columns * roomSize);
+			int posY = Random.Range(0, rows * roomSize);
+
+			while ((posX == 0 && posY == 0) || !barricadePositionList[posX, posY])
+			{
+				posX = Random.Range(0, columns * roomSize);
+				posY = Random.Range(0, rows * roomSize);
+			}
+
+			GameObject instance = Instantiate(IA2, new Vector3(posX * tileSize, IA2.transform.localScale.y /2f, posY * tileSize), Quaternion.identity) as GameObject;
+			instance.transform.SetParent(levelHolder);
+		}
+
+		// Creates IA 3 
+		for (int k = 0; k < nbIA3; k++)
+		{
+			int posX = Random.Range(0, columns * roomSize);
+			int posY = Random.Range(0, rows * roomSize);
+
+			while (!barricadePositionList[posX, posY])
+			{
+				posX = Random.Range(0, columns * roomSize);
+				posY = Random.Range(0, rows * roomSize);
+			}
+
+			GameObject instance = Instantiate(IA3, new Vector3(posX * tileSize, outsideWalls[0].transform.localScale.y - IA3.transform.localScale.y /2f, posY * tileSize), Quaternion.identity) as GameObject;
+			instance.transform.SetParent(levelHolder);
+		}
+	}
+
+
     void TransitionLevelSetup(int nextLevelDoor, int previousLevelDoor, float oldPlayerPosX)
     {
         GameObject toInstantiateTile = transitionLevelFloor;
@@ -539,6 +582,7 @@ public class LevelManager : MonoBehaviour {
         nbBarricades = levelNbBarricades;
 
         levelHolder = new GameObject("Level").transform;
+        levelHolder.tag = "Level";
         goalHolder = new GameObject("Goals").transform;
         goalHolder.transform.SetParent(GameObject.Find("Canvas").transform);
         goalHolder.transform.localPosition = new Vector3(0f, 0f, 0f);
@@ -568,6 +612,7 @@ public class LevelManager : MonoBehaviour {
         BarricadeSetup();
         LampSetup();
 		IAfleePositionSetup ();
+		MonsterSetup();
         TransitionLevelSetup(nextLevelDoor, previousLevelDoor, levelOldPlayerPosX);
 
         Debug.Log("Horizontal avant : " + debug + ", après : " + insideHorizontalWallList.Count + " test " + removeHorizontalWallList.Count);

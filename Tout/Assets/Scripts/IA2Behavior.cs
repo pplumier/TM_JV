@@ -23,6 +23,7 @@ public class IA2Behavior : MonoBehaviour {
 		isAttacking = false;
 		isRunningAway = false;
 		time = timeBeforeSearching;
+		player = GameObject.FindGameObjectWithTag("Player");
 	}
 	
 	// Update is called once per frame
