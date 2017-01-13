@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour {
 
         tabLevelColums[1] = 3;
         tabLevelRows[1] = 10;
-        tabLevelNbWalls[1] = 500;
+        tabLevelNbWalls[1] = 400;
         tabLevelNbTypeTiles[1] = 6;
         tabLevelMaxNbTilesByRoom[1] = 9;
         tabLevelTileSize[1] = 10;
@@ -75,9 +75,9 @@ public class GameManager : MonoBehaviour {
         tabLevelNbLamps[1] = 4;
         tabLevelNbBarricades[1] = 20;
 
-        tabLevelColums[2] = 10;
-        tabLevelRows[2] = 10;
-        tabLevelNbWalls[2] = 1000;
+        tabLevelColums[2] = 8;
+        tabLevelRows[2] = 8;
+        tabLevelNbWalls[2] = 900;
         tabLevelNbTypeTiles[2] = 6;
         tabLevelMaxNbTilesByRoom[2] = 9;
         tabLevelTileSize[2] = 10;
@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour {
 
         tabLevelColums[3] = 2;
         tabLevelRows[3] = 5;
-        tabLevelNbWalls[3] = 300;
+        tabLevelNbWalls[3] = 200;
         tabLevelNbTypeTiles[3] = 6;
         tabLevelMaxNbTilesByRoom[3] = 9;
         tabLevelTileSize[3] = 10;
@@ -97,11 +97,11 @@ public class GameManager : MonoBehaviour {
         tabLevelNbLamps[3] = 4;
         tabLevelNbBarricades[3] = 75;
 
-        tabLevelColums[4] = 10;
-        tabLevelRows[4] = 10;
-        tabLevelNbWalls[4] = 1400;
+        tabLevelColums[4] = 8;
+        tabLevelRows[4] = 8;
+        tabLevelNbWalls[4] = 1200;
         tabLevelNbTypeTiles[4] = 6;
-        tabLevelMaxNbTilesByRoom[4] = 6;
+        tabLevelMaxNbTilesByRoom[4] = 9;
         tabLevelTileSize[4] = 10;
         tabLevelRoomSize[4] = 3;
         tabLevelNbGoals[4] = 20;
