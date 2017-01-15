@@ -13,4 +13,8 @@ public class LampControl : MonoBehaviour {
         if (Input.GetButtonDown("Fire2"))
             spotlight.enabled = !spotlight.enabled;
 	}
+	
+	public bool IsOn() {
+		return spotlight.enabled;
+	}
 }

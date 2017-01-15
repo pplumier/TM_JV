@@ -21,6 +21,8 @@ public class IA3Behaviour : MonoBehaviour {
 	
 	// Escape
 	public Transform escapePosition;
+	private GameObject[] escapePoints;
+	private Transform target;
 	private UnityEngine.AI.NavMeshAgent agent;
 
 	
@@ -38,6 +40,9 @@ public class IA3Behaviour : MonoBehaviour {
 		sumRotation = 0;
 		//agent = null;
 		agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+		
+		escapePoints = GameObject.FindGameObjectsWithTag("FleePosition");
+		target = null;
 	}
 	
 	// Update is called once per frame
@@ -107,7 +112,20 @@ public class IA3Behaviour : MonoBehaviour {
 			}
 			// Else, run away to the escape point
 			else {
-				agent.SetDestination(escapePosition.position);
+				if (target != null) {
+					agent.SetDestination(target.position);
+				}
+				else {
+					// Flee to the furthest escape point	
+					target = escapePoints[0].transform;
+					if (Vector3.Distance(target.position, transform.position) < Vector3.Distance(escapePoints[1].transform.position, transform.position))
+						target = escapePoints[1].transform;
+					if (Vector3.Distance(target.position, transform.position) < Vector3.Distance(escapePoints[2].transform.position, transform.position))
+						target = escapePoints[2].transform;
+					if (Vector3.Distance(target.position, transform.position) < Vector3.Distance(escapePoints[3].transform.position, transform.position))
+						target = escapePoints[3].transform;
+					agent.SetDestination(target.position);		
+				}	
 			}
 			
 		}
