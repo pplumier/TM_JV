@@ -97,7 +97,8 @@ public class IA3Behaviour : MonoBehaviour {
 		else {
 			if (!isAgentActive) {
 				isAgentActive = true;
-				agent = UnityEngineInternal.APIUpdaterRuntimeServices.AddComponent( gameObject, "Assets/Scripts/IABehaviour.cs (30,9)", "NavMeshAgent" ) as UnityEngine.AI.NavMeshAgent;
+				agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+                agent.enabled = true;
 				agent.speed = 20;
 			}
 			
