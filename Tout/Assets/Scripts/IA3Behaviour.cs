@@ -26,6 +26,8 @@ public class IA3Behaviour : MonoBehaviour {
 	private UnityEngine.AI.NavMeshAgent agent;
 
 	
+	private bool escapePointsFound;
+	
 	// Use this for initialization
 	void Start () {
 		player = GameObject.FindGameObjectWithTag("Player");
@@ -38,15 +40,20 @@ public class IA3Behaviour : MonoBehaviour {
 		distToGround = GetComponent<Collider>().bounds.extents.y;
 
 		sumRotation = 0;
-		//agent = null;
+		
+		escapePointsFound = false;
 		agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
 		
-		escapePoints = GameObject.FindGameObjectsWithTag("FleePosition");
 		target = null;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (!escapePointsFound) {
+			escapePointsFound = true;
+			escapePoints = GameObject.FindGameObjectsWithTag("FleePosition");
+		}
+		
 		Vector2 pos = new Vector2(transform.position.x, transform.position.z);
 		Vector2 playerPos = new Vector2(player.transform.position.x, player.transform.position.z);
 		

@@ -21,6 +21,8 @@ public class IA2Behavior : MonoBehaviour {
 	private GameObject[] escapePoints;
 	private Transform target;
 	
+	private bool escapePointsFound;
+	
 	// Use this for initialization
 	void Start () {
 		agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -32,12 +34,17 @@ public class IA2Behavior : MonoBehaviour {
 		
 		plight = GameObject.FindGameObjectWithTag("PlayerLight");
 		
-		escapePoints = GameObject.FindGameObjectsWithTag("FleePosition");
+		escapePointsFound = false;
 		target = null;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (!escapePointsFound) {
+			escapePointsFound = true;
+			escapePoints = GameObject.FindGameObjectsWithTag("FleePosition");
+		}
+		
 		if (isSearching) {
 			Vector3 direction = Camera.main.transform.position - transform.position;
 
