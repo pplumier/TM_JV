@@ -45,6 +45,7 @@ public class LevelManager : MonoBehaviour {
     private List<GameObject> removeVerticalWallList;
     private bool[,] barricadePositionList;
     private bool[,] lampPositionList;
+	private bool[,] IA3PositionList;
     private bool[] isInInsideHorizontalWallList;
     private bool[] isInInsideVerticalWallList;
     private int debug;
@@ -67,7 +68,7 @@ public class LevelManager : MonoBehaviour {
 	
 	private int nbIA1 = 0;
 	private int nbIA2 = 5;
-	private int nbIA3 = 5;
+	private int nbIA3 = 6;
 
     void InitialiseFloorTiles(GameObject[] floorRoomTiles, int number)
     {
@@ -437,7 +438,7 @@ public class LevelManager : MonoBehaviour {
 			int posX = Random.Range(0, columns * roomSize);
 			int posY = Random.Range(0, rows * roomSize);
 
-			while (!barricadePositionList[posX, posY])
+			while (!IA3PositionList[posX, posY])
 			{
 				posX = Random.Range(0, columns * roomSize);
 				posY = Random.Range(0, rows * roomSize);
@@ -445,6 +446,7 @@ public class LevelManager : MonoBehaviour {
 
 			GameObject instance = Instantiate(IA3, new Vector3(posX * tileSize, outsideWalls[0].transform.localScale.y - IA3.transform.localScale.y /2f, posY * tileSize), Quaternion.identity) as GameObject;
 			instance.transform.SetParent(levelHolder);
+			IA3PositionList[posX, posY] = false;
 		}
 	}
 
@@ -594,6 +596,7 @@ public class LevelManager : MonoBehaviour {
         removeVerticalWallList = new List<GameObject>();
         barricadePositionList = new bool[columns * roomSize, rows * roomSize];
         lampPositionList = new bool[columns * roomSize, rows * roomSize];
+		IA3PositionList = new bool[columns * roomSize, rows * roomSize];
 
         for (int x = 0; x < columns * roomSize; x++)
         {
@@ -601,6 +604,7 @@ public class LevelManager : MonoBehaviour {
             {
                 barricadePositionList[x, y] = true;
                 lampPositionList[x, y] = true;
+				IA3PositionList[x, y] = true;
             }
         }
 

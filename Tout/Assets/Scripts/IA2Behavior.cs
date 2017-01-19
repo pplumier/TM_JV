@@ -87,7 +87,6 @@ public class IA2Behavior : MonoBehaviour {
 
 			//Debug.Log("Angle: " + Vector3.Angle(plight.transform.forward, -direction));
 			if (isLightOn && hit.collider != null && hit.collider.CompareTag("Player") && Vector3.Angle(plight.transform.forward, -direction) < 50) {
-				Debug.Log("AAA");
 				isAttacking = false;
 				isRunningAway = true;
 				anim.SetBool ("walking", true);
