@@ -99,9 +99,14 @@ public class IA2Behavior : MonoBehaviour {
 				if (Vector3.Distance(target.position, transform.position) < Vector3.Distance(escapePoints[3].transform.position, transform.position))
 					target = escapePoints[3].transform;
 				agent.SetDestination(target.position);		
-			}	
+			}
+				if (Vector3.Distance(transform.position, target.transform.position) < 5) {
+					target = null;
+					isRunningAway = false;
+				}
 		}
 		else {
+			//Debug.Log("EscapePoint: Time: " + time);
 			// Waiting x seconds before searching again
 			if (time > 0)
 				time -= Time.deltaTime;

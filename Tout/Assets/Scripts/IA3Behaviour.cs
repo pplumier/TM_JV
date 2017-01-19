@@ -116,32 +116,34 @@ public class IA3Behaviour : MonoBehaviour {
                 agent.enabled = true;
 				agent.speed = 20;
 			}
-			
-			Vector3 direction = Camera.main.transform.position - transform.position;
-			
-			RaycastHit hit;	
-			Physics.Raycast(transform.position, direction, out hit, Vector3.Distance(transform.position, player.transform.position));
-			
-			// If the player can't see it, destroy the object
-			if (hit.collider != null && !hit.collider.CompareTag("Player")) {
-				Destroy(gameObject);
-			}
-			// Else, run away to the escape point
 			else {
-				if (target != null) {
-					agent.SetDestination(target.position);
+				
+				Vector3 direction = Camera.main.transform.position - transform.position;
+				
+				RaycastHit hit;	
+				Physics.Raycast(transform.position, direction, out hit, Vector3.Distance(transform.position, player.transform.position));
+				
+				// If the player can't see it, destroy the object
+				if (hit.collider != null && !hit.collider.CompareTag("Player")) {
+					Destroy(gameObject);
 				}
+				// Else, run away to the escape point
 				else {
-					// Flee to the furthest escape point	
-					target = escapePoints[0].transform;
-					if (Vector3.Distance(target.position, transform.position) < Vector3.Distance(escapePoints[1].transform.position, transform.position))
-						target = escapePoints[1].transform;
-					if (Vector3.Distance(target.position, transform.position) < Vector3.Distance(escapePoints[2].transform.position, transform.position))
-						target = escapePoints[2].transform;
-					if (Vector3.Distance(target.position, transform.position) < Vector3.Distance(escapePoints[3].transform.position, transform.position))
-						target = escapePoints[3].transform;
-					agent.SetDestination(target.position);		
-				}	
+					if (target != null) {
+						agent.SetDestination(target.position);
+					}
+					else {
+						// Flee to the furthest escape point	
+						target = escapePoints[0].transform;
+						if (Vector3.Distance(target.position, transform.position) < Vector3.Distance(escapePoints[1].transform.position, transform.position))
+							target = escapePoints[1].transform;
+						if (Vector3.Distance(target.position, transform.position) < Vector3.Distance(escapePoints[2].transform.position, transform.position))
+							target = escapePoints[2].transform;
+						if (Vector3.Distance(target.position, transform.position) < Vector3.Distance(escapePoints[3].transform.position, transform.position))
+							target = escapePoints[3].transform;
+						agent.SetDestination(target.position);		
+					}	
+				}
 			}
 			
 		}
