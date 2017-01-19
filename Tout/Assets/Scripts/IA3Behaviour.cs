@@ -24,6 +24,8 @@ public class IA3Behaviour : MonoBehaviour {
 	private GameObject[] escapePoints;
 	private Transform target;
 	private UnityEngine.AI.NavMeshAgent agent;
+	
+	private bool booleanSet = false;
 
 	
 	private bool escapePointsFound;
@@ -77,6 +79,10 @@ public class IA3Behaviour : MonoBehaviour {
 		// If the AI is falling, or on the player
 		else if (!IsGrounded()) {
 			if (onPlayer) {
+				if (!booleanSet) {
+					player.GetComponent<StatePlayer>().SetIsAttacked(true);
+					booleanSet = true;
+				}
 				//Debug.Log("OnPLAYER");
 				transform.position = Camera.main.transform.position + Camera.main.transform.forward * 1;
 				transform.rotation = Camera.main.transform.rotation;
@@ -103,6 +109,8 @@ public class IA3Behaviour : MonoBehaviour {
 		// If the AI is on the ground
 		else {
 			if (!isAgentActive) {
+				Debug.Log("ActiveAgent");
+				player.GetComponent<StatePlayer>().SetIsAttacked(false);
 				isAgentActive = true;
 				agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
                 agent.enabled = true;
@@ -147,7 +155,7 @@ public class IA3Behaviour : MonoBehaviour {
 			//Debug.Log("Hit Player");
 			onPlayer = true;
 			done = true;
-			player.GetComponent<StatePlayer>().SetIsAttacked(true);
+
 			r.velocity = Vector3.zero;
 			r.useGravity = false;
 			r.freezeRotation = true;
