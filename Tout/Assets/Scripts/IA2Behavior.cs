@@ -81,11 +81,13 @@ public class IA2Behavior : MonoBehaviour {
 			// If the player is visible, his light is on, and points the monster
 			bool isLightOn = plight.GetComponent<LampControl>().IsOn();
 
-			Vector3 direction = Camera.main.transform.position - transform.position;
+			Vector3 direction = Camera.main.transform.position - (transform.position + transform.up*2);
 			RaycastHit hit;
-			Physics.Raycast(transform.position, direction, out hit, Vector3.Distance(transform.position, player.transform.position));
+			Physics.Raycast(transform.position + transform.up*2, direction, out hit, Vector3.Distance(transform.position, player.transform.position));
 
+			//Debug.Log("Angle: " + Vector3.Angle(plight.transform.forward, -direction));
 			if (isLightOn && hit.collider != null && hit.collider.CompareTag("Player") && Vector3.Angle(plight.transform.forward, -direction) < 50) {
+				Debug.Log("AAA");
 				isAttacking = false;
 				isRunningAway = true;
 				anim.SetBool ("walking", true);
@@ -98,6 +100,7 @@ public class IA2Behavior : MonoBehaviour {
 		else if (isRunningAway) {
 			if (target != null) {
 				agent.SetDestination(target.position);
+				agent.speed = 10;
 			}
 			else {
 				// Flee to the furthest escape point
