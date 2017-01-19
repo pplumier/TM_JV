@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour {
         tabLevelMaxNbTilesByRoom[0] = 9;
         tabLevelTileSize[0] = 10;
         tabLevelRoomSize[0] = 4;
-        tabLevelNbGoals[0] = 20;
+        tabLevelNbGoals[0] = 5;
         tabLevelNbLamps[0] = 20;
         tabLevelNbBarricades[0] = 50;
 
