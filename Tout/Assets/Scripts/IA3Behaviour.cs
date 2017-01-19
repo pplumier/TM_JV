@@ -15,8 +15,6 @@ public class IA3Behaviour : MonoBehaviour {
 	
 	private bool isAgentActive;
 	
-	private float initX, initY, initZ;
-	
 	
 	private float oldY = 1000;
 	
@@ -26,7 +24,6 @@ public class IA3Behaviour : MonoBehaviour {
 	public float moveLimit = 2; // Amount of mouse movement needed to eject the IA from the player
 	
 	// Escape
-	//public Transform escapePosition;
 	private GameObject[] escapePoints;
 	private Transform target;
 	private UnityEngine.AI.NavMeshAgent agent;
@@ -55,10 +52,6 @@ public class IA3Behaviour : MonoBehaviour {
 		agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
 		
 		target = null;
-		
-		//initX = transform.position.x;
-		//initY = 5.55f;
-		//initZ = transform.position.z;
 	}
 	
 	// Update is called once per frame
@@ -79,14 +72,14 @@ public class IA3Behaviour : MonoBehaviour {
 			RaycastHit hit;	
 	
 			Physics.Raycast((transform.position + transform.up*1), direction, out hit, Vector3.Distance((transform.position + transform.up*1), player.transform.position));
-			
+
 			if (hit.collider != null && hit.collider.CompareTag("Player") && !player.GetComponent<StatePlayer>().IsAttacked()) {
 				if (Vector2.Distance(pos, playerPos) < maxDistance) {
 					r.useGravity = true;
 					r.AddForce((player.transform.position - transform.position)*100);
 					onCeiling = false;
 				}
-			}	
+			}		
 			
 		}
 		else {
