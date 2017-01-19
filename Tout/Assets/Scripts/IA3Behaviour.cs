@@ -112,7 +112,7 @@ public class IA3Behaviour : MonoBehaviour {
 				//Debug.Log("ActiveAgent");
 				player.GetComponent<StatePlayer>().SetIsAttacked(false);
 				isAgentActive = true;
-				agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+				//agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
                 agent.enabled = true;
 				agent.speed = 20;
 			}
