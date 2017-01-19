@@ -109,7 +109,7 @@ public class IA3Behaviour : MonoBehaviour {
 		// If the AI is on the ground
 		else {
 			if (!isAgentActive) {
-				Debug.Log("ActiveAgent");
+				//Debug.Log("ActiveAgent");
 				player.GetComponent<StatePlayer>().SetIsAttacked(false);
 				isAgentActive = true;
 				agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
