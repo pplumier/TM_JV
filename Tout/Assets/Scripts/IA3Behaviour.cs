@@ -129,10 +129,12 @@ public class IA3Behaviour : MonoBehaviour {
 					if (!isAgentActive) {
 						player.GetComponent<StatePlayer>().SetIsAttacked(false);
 						isAgentActive = true;
-						//agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-						agent.enabled = true;
+                        UnityEngine.AI.NavMeshHit hit;
+                        UnityEngine.AI.NavMesh.SamplePosition(transform.position, out hit, 100f, UnityEngine.AI.NavMesh.AllAreas);
+                        transform.position = hit.position;
+                        agent.enabled = true;
 						agent.speed = 20;
-					}
+                    }
 					else {
 						Vector3 direction = Camera.main.transform.position - (transform.position + transform.up);
 						
@@ -146,18 +148,18 @@ public class IA3Behaviour : MonoBehaviour {
 						// Else, run away to the escape point
 						else {
 							if (target != null) {
-								agent.SetDestination(target.position);
+                                agent.SetDestination(target.position);
 							}
 							else {
-								// Flee to the furthest escape point	
-								target = escapePoints[0].transform;
+                                // Flee to the furthest escape point	
+                                target = escapePoints[0].transform;
 								if (Vector3.Distance(target.position, transform.position) < Vector3.Distance(escapePoints[1].transform.position, transform.position))
 									target = escapePoints[1].transform;
 								if (Vector3.Distance(target.position, transform.position) < Vector3.Distance(escapePoints[2].transform.position, transform.position))
 									target = escapePoints[2].transform;
 								if (Vector3.Distance(target.position, transform.position) < Vector3.Distance(escapePoints[3].transform.position, transform.position))
 									target = escapePoints[3].transform;
-								agent.SetDestination(target.position);		
+                                agent.SetDestination(target.position);		
 							}	
 						}
 					}
