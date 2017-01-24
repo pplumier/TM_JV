@@ -16,7 +16,7 @@ public class Follower : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (activate)
+        if (activate && Vector3.Magnitude(joueur.transform.position - transform.position) > 2f)
             nm.SetDestination(joueur.transform.position);
         else
             nm.SetDestination(transform.position);

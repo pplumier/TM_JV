@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour {
             Destroy(gameObject);
         }
 
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
         levelScript = GetComponent<LevelManager>();
         InitGame();
 	}
