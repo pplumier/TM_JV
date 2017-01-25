@@ -66,7 +66,7 @@ public class LevelManager : MonoBehaviour {
     private int nbLamps = 20;
     private int nbBarricades = 50;
 	
-	private int nbIA1 = 0;
+	private int nbIA1 = 1;
 	private int nbIA2 = 5;
 	private int nbIA3 = 6;
 
@@ -416,7 +416,22 @@ public class LevelManager : MonoBehaviour {
 
 	void MonsterSetup()
 	{
-		// Creates IA 2
+
+        for (int k = 0; k < nbIA1; k++)
+        {
+            int posX = Random.Range(0, columns * roomSize);
+            int posY = Random.Range(0, rows * roomSize);
+
+            while ((posX == 0 && posY == 0) || !barricadePositionList[posX, posY])
+            {
+                posX = Random.Range(0, columns * roomSize);
+                posY = Random.Range(0, rows * roomSize);
+            }
+
+            GameObject instance = Instantiate(IA1, new Vector3(posX * tileSize, IA1.transform.localScale.y / 2f, posY * tileSize), Quaternion.identity) as GameObject;
+            instance.transform.SetParent(levelHolder);
+        }
+        // Creates IA 2
 		for (int k = 0; k < nbIA2; k++)
 		{
 			int posX = Random.Range(0, columns * roomSize);

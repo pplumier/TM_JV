@@ -20,8 +20,8 @@ public class RayCast : MonoBehaviour {
         if (spotlight!= null && !spotlight.enabled)
             return;
         if(!randomDirection)
-            for(float i = -1f; i < 1f; i += 0.2f)
-                for (float j = -0.5f; j < 0.5; j += 0.2f)
+            for(float i = -0.4f; i < 0.6f; i += 0.2f)
+                for (float j = -0.4f; j < 0.6f; j += 0.2f)
                 {
                     Ray ray = new Ray(transform.position, transform.forward + transform.up * i + transform.right * j);
                     RaycastHit hitInfo;
