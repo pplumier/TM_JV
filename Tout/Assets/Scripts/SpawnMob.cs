@@ -25,6 +25,7 @@ public class SpawnMob : MonoBehaviour {
         if (Time.fixedTime - lastTime > timeInBetween && transform.childCount < maxSpawn)
         {
             GameObject go = Instantiate(toSpawn);
+            go.transform.position = transform.position;
             go.transform.parent = GameObject.FindGameObjectWithTag("Level").transform;
             lastTime = Time.fixedTime;
         }       
