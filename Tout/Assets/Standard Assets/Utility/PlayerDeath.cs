@@ -1,31 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
 public class PlayerDeath : MonoBehaviour {
 
-    bool dead;
-    float ToD;
+	private bool dead;
+	private float ToD;
+	private Text finishText;
 
     // Use this for initialization
     void Start () {
-		
+		finishText = GameObject.Find("FinishText").GetComponent<Text>() as Text;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        if (dead && Time.realtimeSinceStartup - ToD > 5f)
-        {
-            int scene = SceneManager.GetActiveScene().buildIndex;
-            SceneManager.LoadScene(scene, LoadSceneMode.Single);
-        }   
-    }
+	void Update ()
+	{
+		if (dead) 
+		{
+			finishText.text = "You died!";
+
+			if (Time.realtimeSinceStartup - ToD > 5f) {
+				int scene = SceneManager.GetActiveScene ().buildIndex;
+				SceneManager.LoadScene (scene, LoadSceneMode.Single);
+				finishText.text = "";
+			}   
+		}
+	}
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("hi");
         if(collision.gameObject.tag == "IA" && !dead)
         {
             dead = true;
